@@ -10,18 +10,20 @@
 
 #include "SocketTCP.h"
 
-class SocketTCPv4 : public SocketTCP
+namespace T
 {
+	class SocketTCPv4 : public SocketTCP
+	{
 
-public:
-	/**
-	 * Constructor
-	 */
-	SocketTCPv4();
-	/**
-	 * Destructor
-	 */
-	~SocketTCPv4();
-
-};
+	public:
+		/**
+		 * Constructor
+		 */
+		SocketTCPv4();
+		/**
+		 * Destructor
+		 */
+		~SocketTCPv4();
+	};
+}
 #endif // !defined(EA_C868A97E_C546_4321_856E_6D6E43A67450__INCLUDED_)

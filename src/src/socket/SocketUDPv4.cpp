@@ -7,22 +7,20 @@
 
 #include "SocketUDPv4.h"
 
-
-
-
-/**
- * Constructor
- */
-SocketUDPv4::SocketUDPv4()
-:  SocketUDP(AF_INET)
+namespace T
 {
+    /**
+     * Constructor
+     */
+    SocketUDPv4::SocketUDPv4()
+        : SocketUDP(AF_INET)
+    {
+    }
 
-}
-
-
-/**
- * Destructor
- */
-SocketUDPv4::~SocketUDPv4(){
-
+    /**
+     * Destructor
+     */
+    SocketUDPv4::~SocketUDPv4()
+    {
+    }
 }

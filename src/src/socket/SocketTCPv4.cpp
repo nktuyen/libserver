@@ -7,22 +7,20 @@
 
 #include "SocketTCPv4.h"
 
-
-
-
-/**
- * Constructor
- */
-SocketTCPv4::SocketTCPv4()
-  :SocketTCP(AF_INET)
+namespace T
 {
+    /**
+     * Constructor
+     */
+    SocketTCPv4::SocketTCPv4()
+        : SocketTCP(AF_INET)
+    {
+    }
 
-}
-
-
-/**
- * Destructor
- */
-SocketTCPv4::~SocketTCPv4(){
-
+    /**
+     * Destructor
+     */
+    SocketTCPv4::~SocketTCPv4()
+    {
+    }
 }

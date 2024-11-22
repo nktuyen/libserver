@@ -7,22 +7,21 @@
 
 #include "SocketTCPv6.h"
 
-
-
-
-/**
- * Constructor
- */
-SocketTCPv6::SocketTCPv6()
-  :SocketTCP(AF_INET6)
+namespace T
 {
+    /**
+     * Constructor
+     */
+    SocketTCPv6::SocketTCPv6()
+        : SocketTCP(AF_INET6)
+    {
+    }
 
-}
-
-
-/**
- * Destructor
- */
-SocketTCPv6::~SocketTCPv6(){
+    /**
+     * Destructor
+     */
+    SocketTCPv6::~SocketTCPv6()
+    {
+    }
 
 }

@@ -12,9 +12,9 @@
 #include <Windows.h>
 #ifndef AF_INET6
 #define AF_INET6 10
-#endif//AF_INET6
+#endif // AF_INET6
 typedef SOCKET SocketHandle;
- #define InvalidHandle	INVALID_SOCKET
+#define InvalidHandle INVALID_SOCKET
 #define SocketError SOCKET_ERROR
 #else // ! _WINDOWS
 #include <unistd.h>
@@ -85,12 +85,17 @@ namespace T
 		 * Determines whether the socket is readable or not, waiting if necessary, to
 		 * perform synchronous I/O
 		 */
-		bool isReadable(unsigned int timeout);
+		bool isReadable(unsigned int timeout_ms);
 		/**
 		 * Determines whether the socket is writable or not, waiting if necessary, to
 		 * perform synchronous I/O
 		 */
-		bool isWritable(unsigned int timeout);
+		bool isWritable(unsigned int timeout_ms);
+		/**
+		 * Determines whether the socket is writable/readable or not, waiting if necessary, to
+		 * perform synchronous I/O
+		 */
+		bool isReadWritable(unsigned int timeout_ms);
 
 	private:
 		/**

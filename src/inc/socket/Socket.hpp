@@ -10,8 +10,12 @@
 
 #ifdef _WINDOWS
 #include <Windows.h>
+#ifndef AF_INET6
+#define AF_INET6 10
+#endif//AF_INET6
 typedef SOCKET SocketHandle;
-// #define INVALID_SOCKET	INVALID_SOCKET
+ #define InvalidHandle	INVALID_SOCKET
+#define SocketError SOCKET_ERROR
 #else // ! _WINDOWS
 #include <unistd.h>
 #include <sys/types.h>
@@ -22,15 +26,14 @@ typedef SOCKET SocketHandle;
 #include <sys/socket.h>
 #include <sys/select.h>
 typedef int SocketHandle;
-#define INVALID_SOCKET (SocketHandle)(-1)
-#define SOCKET_ERROR -1
+#define InvalidHandle (SocketHandle)(-1)
+#define SocketError -1
 #endif //_WINDOWS
 
 namespace T
 {
 	class Socket
 	{
-
 	public:
 		Socket();
 
@@ -54,7 +57,6 @@ namespace T
 		 */
 		inline int family()
 		{
-
 			return mFamily;
 		}
 		/**
@@ -62,7 +64,6 @@ namespace T
 		 */
 		inline int protocol()
 		{
-
 			return mProtocol;
 		}
 		/**
@@ -70,7 +71,6 @@ namespace T
 		 */
 		inline int type()
 		{
-
 			return mType;
 		}
 		/**
@@ -114,7 +114,7 @@ namespace T
 		/**
 		 * Associates a local address with a socket
 		 */
-		virtual bool Bind(char *ip, unsigned short port);
+		virtual bool Bind(const char *ip, unsigned short port);
 		/**
 		 * Places a socket in a state in which it is listening for an incoming connection
 		 */
@@ -122,7 +122,7 @@ namespace T
 		/**
 		 * Permits an incoming connection attempt on a socket
 		 */
-		virtual Socket *Accept(int nFamily, const char *ip, unsigned short port);
+		virtual Socket *Accept();
 		/**
 		 * Establishes a connection to a specified socket
 		 */
@@ -143,6 +143,9 @@ namespace T
 		 * Sends data to a specific destination
 		 */
 		virtual int SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags = 0);
+
+	protected:
+		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) { return nullptr; }
 	};
 }
 #endif // !defined(EA_12B02B79_954B_49c3_9E6F_604C3D7BA59C__INCLUDED_)

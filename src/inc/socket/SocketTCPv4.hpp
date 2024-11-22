@@ -8,7 +8,7 @@
 #if !defined(EA_C868A97E_C546_4321_856E_6D6E43A67450__INCLUDED_)
 #define EA_C868A97E_C546_4321_856E_6D6E43A67450__INCLUDED_
 
-#include "SocketTCP.h"
+#include "SocketTCP.hpp"
 
 namespace T
 {

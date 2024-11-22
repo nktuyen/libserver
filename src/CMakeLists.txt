@@ -4,9 +4,11 @@ project(libserver VERSION 0.0.1 LANGUAGES CXX DESCRIPTION "C++ TCP/IP server lib
 include_directories(libserver PUBLIC
     inc
     inc/socket
+    inc/logger
 )
 
 add_library(libserver
+    src/logger/Logger.cpp
     src/socket/Socket.cpp
     src/socket/SocketUDP.cpp
     src/socket/SocketTCP.cpp
@@ -19,3 +21,5 @@ add_library(libserver
 add_executable(test
     main.cpp
 )
+
+target_link_libraries(test libserver)

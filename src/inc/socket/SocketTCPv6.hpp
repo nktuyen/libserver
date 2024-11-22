@@ -8,7 +8,7 @@
 #if !defined(EA_BAF2D552_2BCD_40af_AF6C_C7F0635D9FDE__INCLUDED_)
 #define EA_BAF2D552_2BCD_40af_AF6C_C7F0635D9FDE__INCLUDED_
 
-#include "SocketTCP.h"
+#include "SocketTCP.hpp"
 
 namespace T
 {

@@ -8,7 +8,7 @@
 #if !defined(EA_3502A567_9995_4935_9C3B_9BD184086634__INCLUDED_)
 #define EA_3502A567_9995_4935_9C3B_9BD184086634__INCLUDED_
 
-#include "SocketUDP.h"
+#include "SocketUDP.hpp"
 
 namespace T
 {

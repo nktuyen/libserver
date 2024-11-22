@@ -5,7 +5,8 @@
 //  Original author: Tuyen
 ///////////////////////////////////////////////////////////
 
-#include "SocketTCPv6.h"
+#include "SocketTCPv6.hpp"
+#include <iostream>
 
 namespace T
 {
@@ -15,6 +16,7 @@ namespace T
     SocketTCPv6::SocketTCPv6()
         : SocketTCP(AF_INET6)
     {
+        printf("Family=%d\n",family());
     }
 
     /**

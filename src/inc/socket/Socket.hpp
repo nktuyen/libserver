@@ -240,8 +240,16 @@ namespace T
 		 * Sends data to a specific destination
 		 */
 		virtual int SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags = 0);
+
 	protected:
+		/**
+		 * Callback method which is called on accepting new connection. Return new socket object to accept the connect. Return null to reject
+		 */
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) { return nullptr; }
+		/**
+		 * Attach to an existing socket by handle
+		 */
+		virtual Socket &Attach(SocketHandle hSocket);
 	};
 }
 #endif // !defined(EA_12B02B79_954B_49c3_9E6F_604C3D7BA59C__INCLUDED_)

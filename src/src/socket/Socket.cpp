@@ -70,6 +70,69 @@ namespace T
 	}
 
 	/**
+	 * Attach to an existing socket by handle
+	 */
+	Socket &Socket::Attach(SocketHandle hSocket)
+	{
+		if (mHandle != InvalidHandle)
+		{
+			this->Close();
+		}
+		mHandle = hSocket;
+		if (mHandle != InvalidHandle)
+		{
+			// Obtain options
+			char buffer[sizeof(int)] = {0};
+			SocketSize_t len = sizeof(buffer);
+			// SO_REUSEADDR
+			// memset(buffer, 0, sizeof(buffer));
+			int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, &len);
+			if (res != SocketError)
+			{
+				memcpy(&mOptReusedAddr, &buffer, len);
+			}
+			// SO_RCVBUF
+			memset(buffer, 0, sizeof(buffer));
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, &len);
+			if (res != SocketError)
+			{
+				memcpy(&mOptRecvBufferSize, buffer, len);
+			}
+			// SO_RCVTIMEO
+			memset(buffer, 0, sizeof(buffer));
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, &len);
+			if (res != SocketError)
+			{
+				memcpy(&mOptRecvTimeout, buffer, len);
+			}
+			// SO_SNDBUF
+			memset(buffer, 0, sizeof(buffer));
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, &len);
+			if (res != SocketError)
+			{
+				memcpy(&mOptSendBufferSize, buffer, len);
+			}
+			// SO_SNDTIMEO
+			memset(buffer, 0, sizeof(buffer));
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, &len);
+			if (res != SocketError)
+			{
+				memcpy(&mOptSendTimeout, buffer, len);
+			}
+
+			// Set initial non-blocking mode
+#ifdef _WINDOWS
+			u_long flags = mOptNonBlocking ? 1 : 0;
+			res = ::ioctlsocket(mHandle, FIONBIO, &flags);
+#else  // ! _WINDOWS
+			int flags = fcntl(mHandle, F_GETFL, 0);
+			res = ::fcntl(mHandle, F_SETFL, mOptNonBlocking ? (flags | O_NONBLOCK) : (flags ^ O_NONBLOCK));
+#endif //_WINDOWS
+		}
+		return *this;
+	}
+
+	/**
 	 * Create actual socket
 	 */
 	bool Socket::Create()
@@ -240,6 +303,7 @@ namespace T
 			hSocket = InvalidHandle;
 		}
 
+		newSocket->Attach(hSocket);
 		FO();
 		return newSocket;
 	}

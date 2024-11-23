@@ -16,7 +16,6 @@ namespace T
     SocketTCPv6::SocketTCPv6()
         : SocketTCP(AF_INET6)
     {
-        printf("Family=%d\n",family());
     }
 
     /**

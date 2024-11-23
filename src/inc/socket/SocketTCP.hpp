@@ -27,29 +27,28 @@ namespace T
 		 */
 		virtual ~SocketTCP();
 		/**
-		 * Permits an incoming connection attempt on a socket
-		 */
-		virtual Socket *Accept(int nFamily, const char *ip, unsigned short port);
-		/**
 		 * Associates a local address with a socket
 		 */
-		virtual bool Bind(char *ip, unsigned short port);
-		/**
-		 * Establishes a connection to a specified socket
-		 */
-		virtual bool Connect(const char *ip, unsigned short port);
+		virtual bool Bind(const char *ip, unsigned short port) override;
 		/**
 		 * Places a socket in a state in which it is listening for an incoming connection
 		 */
-		virtual bool Listen(int backlog = SOMAXCONN);
+		virtual bool Listen(int backlog = SOMAXCONN) override;
+		/**
+		 * Establishes a connection to a specified socket
+		 */
+		virtual bool Connect(const char *ip, unsigned short port) override;
 		/**
 		 * Receives data from a connected socket or a bound connectionless socket
 		 */
-		virtual int Receive(char *buffer, int len, int flags);
+		virtual int Receive(char *buffer, int len, int flags) override;
 		/**
 		 * Sends data on a connected socket
 		 */
-		virtual int Send(const char *buffer, int len, int flags);
+		virtual int Send(const char *buffer, int len, int flags) override;
+
+	protected:
+		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCP(nFamily); };
 	};
 }
 #endif // !defined(EA_E8306D78_E2A9_445f_ABCD_217BCCF9816B__INCLUDED_)

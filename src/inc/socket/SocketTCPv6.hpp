@@ -24,6 +24,9 @@ namespace T
 		 * Destructor
 		 */
 		~SocketTCPv6();
+
+	protected:
+		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCPv6(); };
 	};
 }
 #endif // !defined(EA_BAF2D552_2BCD_40af_AF6C_C7F0635D9FDE__INCLUDED_)

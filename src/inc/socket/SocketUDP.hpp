@@ -27,11 +27,11 @@ namespace T
 		/**
 		 * Receives a datagram and stores the source address
 		 */
-		virtual int ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags = 0);
+		virtual int ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags = 0) override;
 		/**
 		 * Sends data to a specific destination
 		 */
-		virtual int SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags = 0);
+		virtual int SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags = 0) override;
 	};
 }
 #endif // !defined(EA_03A8B787_7231_4b42_B827_E574DD6894CD__INCLUDED_)

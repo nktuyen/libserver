@@ -24,6 +24,9 @@ namespace T
 		 * Destructor
 		 */
 		~SocketTCPv4();
+
+	protected:
+		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCPv4(); };
 	};
 }
 #endif // !defined(EA_C868A97E_C546_4321_856E_6D6E43A67450__INCLUDED_)

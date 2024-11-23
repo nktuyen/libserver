@@ -6,9 +6,11 @@
 ///////////////////////////////////////////////////////////
 
 #include "SocketTCP.hpp"
+#include "Logger.hpp"
 
 namespace T
 {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Constructor
 	 */
@@ -25,57 +27,49 @@ namespace T
 	}
 
 	/**
-	 * Permits an incoming connection attempt on a socket
-	 */
-	Socket *SocketTCP::Accept(int nFamily, const char *ip, unsigned short port)
-	{
-
-		return NULL;
-	}
-
-	/**
 	 * Associates a local address with a socket
 	 */
-	bool SocketTCP::Bind(char *ip, unsigned short port)
+	bool SocketTCP::Bind(const char *ip, unsigned short port)
 	{
-
-		return false;
+		FI();
+		FO();
+		return Socket::Bind(ip, port);
 	}
-
-	/**
-	 * Establishes a connection to a specified socket
-	 */
-	bool SocketTCP::Connect(const char *ip, unsigned short port)
-	{
-
-		return false;
-	}
-
 	/**
 	 * Places a socket in a state in which it is listening for an incoming connection
 	 */
 	bool SocketTCP::Listen(int backlog)
 	{
-
-		return false;
+		FI();
+		FO();
+		return Socket::Listen(backlog);
 	}
-
+	/**
+	 * Establishes a connection to a specified socket
+	 */
+	bool SocketTCP::Connect(const char *ip, unsigned short port)
+	{
+		FI();
+		FO();
+		return Socket::Connect(ip, port);
+	}
 	/**
 	 * Receives data from a connected socket or a bound connectionless socket
 	 */
 	int SocketTCP::Receive(char *buffer, int len, int flags)
 	{
-
-		return 0;
+		FI();
+		FO();
+		return Socket::Receive(buffer, len, flags);
 	}
-
 	/**
 	 * Sends data on a connected socket
 	 */
 	int SocketTCP::Send(const char *buffer, int len, int flags)
 	{
-
-		return 0;
+		FI();
+		FO();
+		return Socket::Send(buffer, len, flags);
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

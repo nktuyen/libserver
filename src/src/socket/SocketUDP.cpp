@@ -6,9 +6,11 @@
 ///////////////////////////////////////////////////////////
 
 #include "SocketUDP.hpp"
+#include "Logger.hpp"
 
 namespace T
 {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Constructor
 	 */
@@ -29,8 +31,9 @@ namespace T
 	 */
 	int SocketUDP::ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-
-		return 0;
+		FI();
+		FO();
+		return Socket::ReceiveFrom(buffer, len, ip, port, flags);
 	}
 
 	/**
@@ -38,8 +41,9 @@ namespace T
 	 */
 	int SocketUDP::SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-
-		return 0;
+		FI();
+		FO();
+		return Socket::SendTo(buffer, len, ip, port, flags);
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -86,35 +86,35 @@ namespace T
 			SocketSize_t len = sizeof(buffer);
 			// SO_REUSEADDR
 			// memset(buffer, 0, sizeof(buffer));
-			int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, &len);
+			int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, buffer, &len);
 			if (res != SocketError)
 			{
 				memcpy(&mOptReusedAddr, &buffer, len);
 			}
 			// SO_RCVBUF
 			memset(buffer, 0, sizeof(buffer));
-			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, &len);
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, buffer, &len);
 			if (res != SocketError)
 			{
 				memcpy(&mOptRecvBufferSize, buffer, len);
 			}
 			// SO_RCVTIMEO
 			memset(buffer, 0, sizeof(buffer));
-			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, &len);
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, buffer, &len);
 			if (res != SocketError)
 			{
 				memcpy(&mOptRecvTimeout, buffer, len);
 			}
 			// SO_SNDBUF
 			memset(buffer, 0, sizeof(buffer));
-			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, &len);
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, buffer, &len);
 			if (res != SocketError)
 			{
 				memcpy(&mOptSendBufferSize, buffer, len);
 			}
 			// SO_SNDTIMEO
 			memset(buffer, 0, sizeof(buffer));
-			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, &len);
+			res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, buffer, &len);
 			if (res != SocketError)
 			{
 				memcpy(&mOptSendTimeout, buffer, len);
@@ -150,35 +150,35 @@ namespace T
 				SocketSize_t len = sizeof(buffer);
 				// SO_REUSEADDR
 				// memset(buffer, 0, sizeof(buffer));
-				int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, &len);
+				int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, buffer, &len);
 				if (res != SocketError)
 				{
 					memcpy(&mOptReusedAddr, &buffer, len);
 				}
 				// SO_RCVBUF
 				memset(buffer, 0, sizeof(buffer));
-				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, &len);
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, buffer, &len);
 				if (res != SocketError)
 				{
 					memcpy(&mOptRecvBufferSize, buffer, len);
 				}
 				// SO_RCVTIMEO
 				memset(buffer, 0, sizeof(buffer));
-				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, &len);
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, buffer, &len);
 				if (res != SocketError)
 				{
 					memcpy(&mOptRecvTimeout, buffer, len);
 				}
 				// SO_SNDBUF
 				memset(buffer, 0, sizeof(buffer));
-				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, &len);
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, buffer, &len);
 				if (res != SocketError)
 				{
 					memcpy(&mOptSendBufferSize, buffer, len);
 				}
 				// SO_SNDTIMEO
 				memset(buffer, 0, sizeof(buffer));
-				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, &len);
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, buffer, &len);
 				if (res != SocketError)
 				{
 					memcpy(&mOptSendTimeout, buffer, len);
@@ -527,7 +527,7 @@ namespace T
 		char buffer[sizeof(int)] = {0};
 		memcpy(buffer, &bReused, sizeof(bReused));
 		SocketSize_t len = sizeof(buffer);
-		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, len);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, buffer, len);
 		mOptReusedAddr = bReused;
 
 		FO();
@@ -549,7 +549,7 @@ namespace T
 		char buffer[sizeof(int)] = {0};
 		memcpy(buffer, &nSize, sizeof(nSize));
 		SocketSize_t len = sizeof(buffer);
-		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, len);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, buffer, len);
 		mOptRecvBufferSize = nSize;
 
 		FO();
@@ -571,7 +571,7 @@ namespace T
 		char buffer[sizeof(int)] = {0};
 		memcpy(buffer, &timeout_ms, sizeof(timeout_ms));
 		SocketSize_t len = sizeof(buffer);
-		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, len);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, buffer, len);
 		mOptRecvTimeout = timeout_ms;
 
 		FO();
@@ -593,7 +593,7 @@ namespace T
 		char buffer[sizeof(int)] = {0};
 		memcpy(buffer, &nSize, sizeof(nSize));
 		SocketSize_t len = sizeof(buffer);
-		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, len);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, buffer, len);
 		mOptSendBufferSize = nSize;
 
 		FO();
@@ -615,7 +615,7 @@ namespace T
 		char buffer[sizeof(int)] = {0};
 		memcpy(buffer, &timeout_ms, sizeof(timeout_ms));
 		SocketSize_t len = sizeof(buffer);
-		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, len);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, buffer, len);
 		mOptSendTimeout = timeout_ms;
 
 		FO();

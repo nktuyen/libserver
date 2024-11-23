@@ -5,10 +5,12 @@ include_directories(libserver PUBLIC
     inc
     inc/socket
     inc/logger
+    inc/thread
 )
 
 add_library(libserver
     src/logger/Logger.cpp
+    src/thread/Thread.cpp
     src/socket/Socket.cpp
     src/socket/SocketUDP.cpp
     src/socket/SocketTCP.cpp

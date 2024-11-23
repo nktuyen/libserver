@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "SocketTCPv6.hpp"
+#include "Thread.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -38,5 +39,11 @@ int main(int argc, char *argv[])
     printf("Send timeout:%d\n", i);
 
     res = socket.Close();
+
+
+	T::Thread t;
+	t.Create();
+	t.Stop();
+
     return 0;
 }

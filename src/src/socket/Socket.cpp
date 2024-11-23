@@ -18,7 +18,16 @@ namespace T
 	 * Constructor
 	 */
 	Socket::Socket(int nFamily, int nType, int nProtocol)
-		: mHandle(InvalidHandle), mFamily(nFamily), mType(nType), mProtocol(nProtocol)
+		: mHandle(InvalidHandle),
+		  mFamily(nFamily),
+		  mType(nType),
+		  mProtocol(nProtocol),
+		  mOptReusedAddr(false),
+		  mOptRecvBufferSize(-1),
+		  mOptSendBufferSize(-1),
+		  mOptSendTimeout(-1),
+		  mOptRecvTimeout(-1),
+		  mOptNonBlocking(false)
 	{
 		FI();
 
@@ -70,6 +79,57 @@ namespace T
 		try
 		{
 			mHandle = ::socket(mFamily, mType, mProtocol);
+
+			if (mHandle != InvalidHandle)
+			{
+				// Obtain options
+				char buffer[sizeof(int)] = {0};
+				SocketSize_t len = sizeof(buffer);
+				// SO_REUSEADDR
+				// memset(buffer, 0, sizeof(buffer));
+				int res = ::getsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, &len);
+				if (res != SocketError)
+				{
+					memcpy(&mOptReusedAddr, &buffer, len);
+				}
+				// SO_RCVBUF
+				memset(buffer, 0, sizeof(buffer));
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, &len);
+				if (res != SocketError)
+				{
+					memcpy(&mOptRecvBufferSize, buffer, len);
+				}
+				// SO_RCVTIMEO
+				memset(buffer, 0, sizeof(buffer));
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, &len);
+				if (res != SocketError)
+				{
+					memcpy(&mOptRecvTimeout, buffer, len);
+				}
+				// SO_SNDBUF
+				memset(buffer, 0, sizeof(buffer));
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, &len);
+				if (res != SocketError)
+				{
+					memcpy(&mOptSendBufferSize, buffer, len);
+				}
+				// SO_SNDTIMEO
+				memset(buffer, 0, sizeof(buffer));
+				res = ::getsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, &len);
+				if (res != SocketError)
+				{
+					memcpy(&mOptSendTimeout, buffer, len);
+				}
+
+				// Set initial non-blocking mode
+#ifdef _WINDOWS
+				u_long flags = mOptNonBlocking ? 1 : 0;
+				res = ::ioctlsocket(mHandle, FIONBIO, &flags);
+#else  // ! _WINDOWS
+				int flags = fcntl(mHandle, F_GETFL, 0);
+				res = ::fcntl(mHandle, F_SETFL, mOptNonBlocking ? (flags | O_NONBLOCK) : (flags ^ O_NONBLOCK));
+#endif //_WINDOWS
+			}
 		}
 		catch (const std::exception &ex)
 		{
@@ -160,11 +220,7 @@ namespace T
 		}
 
 		struct sockaddr_in addrinfo = {0};
-#ifdef _WINDOWS
-		int len = sizeof(addrinfo);
-#else  // ! _WINDOWS
-		socklen_t len = sizeof(addrinfo);
-#endif //_WINDOWS
+		SocketSize_t len = sizeof(addrinfo);
 		SocketHandle hSocket = ::accept(mHandle, reinterpret_cast<sockaddr *>(&addrinfo), &len);
 		if (hSocket == InvalidHandle)
 		{
@@ -315,11 +371,7 @@ namespace T
 		}
 
 		struct sockaddr_in addrinfo = {0};
-#ifdef _WINDOWS
-		int outlen = 0;
-#else  // ! _WINDOWS
-		socklen_t outlen = 0;
-#endif //_WINDOWS
+		SocketSize_t outlen = 0;
 		addrinfo.sin_family = mFamily;
 		addrinfo.sin_port = htons(port);
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
@@ -359,17 +411,151 @@ namespace T
 		}
 
 		struct sockaddr_in addrinfo = {0};
-#ifdef _WINDOWS
-		int outlen = sizeof(addrinfo);
-#else  // ! _WINDOWS
-		socklen_t outlen = sizeof(addrinfo);
-#endif //_WINDOWS
+		SocketSize_t outlen = sizeof(addrinfo);
 		addrinfo.sin_family = mFamily;
 		addrinfo.sin_port = htons(port);
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
 
 		FO();
 		return ::sendto(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), outlen);
+	}
+
+	/**
+	 * Set non-blocking option
+	 */
+	bool Socket::setOptNonBlocking(bool bNonBlocking)
+	{
+		FI();
+
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		// Set initial non-blocking mode
+#ifdef _WINDOWS
+		u_long flags = bNonBlocking ? 1 : 0;
+		int res = ::ioctlsocket(mHandle, FIONBIO, &flags);
+#else  // ! _WINDOWS
+		int flags = fcntl(mHandle, F_GETFL, 0);
+		int res = ::fcntl(mHandle, F_SETFL, bNonBlocking ? (flags | O_NONBLOCK) : (flags ^ O_NONBLOCK));
+#endif //_WINDOWS
+		mOptNonBlocking = bNonBlocking;
+
+		FO();
+		return res != SocketError;
+	}
+
+	/**
+	 * Set reused address option
+	 */
+	bool Socket::setOptReusedAddress(bool bReused)
+	{
+		FI();
+
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		char buffer[sizeof(int)] = {0};
+		memcpy(buffer, &bReused, sizeof(bReused));
+		SocketSize_t len = sizeof(buffer);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, &buffer, len);
+		mOptReusedAddr = bReused;
+
+		FO();
+		return res != SocketError;
+	}
+
+	/**
+	 * Set receive buffer size
+	 */
+	bool Socket::setOptRecvBufferSize(int nSize)
+	{
+		FI();
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		char buffer[sizeof(int)] = {0};
+		memcpy(buffer, &nSize, sizeof(nSize));
+		SocketSize_t len = sizeof(buffer);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, &buffer, len);
+		mOptRecvBufferSize = nSize;
+
+		FO();
+		return res != SocketError;
+	}
+
+	/**
+	 * Set receive timeout
+	 */
+	bool Socket::setOptRecvTimeout(int timeout_ms)
+	{
+		FI();
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		char buffer[sizeof(int)] = {0};
+		memcpy(buffer, &timeout_ms, sizeof(timeout_ms));
+		SocketSize_t len = sizeof(buffer);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, &buffer, len);
+		mOptRecvTimeout = timeout_ms;
+
+		FO();
+		return res != SocketError;
+	}
+
+	/**
+	 * Set send buffer size
+	 */
+	bool Socket::setOptSendBufferSize(int nSize)
+	{
+		FI();
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		char buffer[sizeof(int)] = {0};
+		memcpy(buffer, &nSize, sizeof(nSize));
+		SocketSize_t len = sizeof(buffer);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, &buffer, len);
+		mOptSendBufferSize = nSize;
+
+		FO();
+		return res != SocketError;
+	}
+
+	/**
+	 * Set send timeout
+	 */
+	bool Socket::setOptSendTimeout(int timeout_ms)
+	{
+		FI();
+		if (mHandle == InvalidHandle)
+		{
+			FO();
+			return false;
+		}
+
+		char buffer[sizeof(int)] = {0};
+		memcpy(buffer, &timeout_ms, sizeof(timeout_ms));
+		SocketSize_t len = sizeof(buffer);
+		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, &buffer, len);
+		mOptSendTimeout = timeout_ms;
+
+		FO();
+		return res != SocketError;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace T

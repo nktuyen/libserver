@@ -14,6 +14,7 @@
 #define AF_INET6 10
 #endif // AF_INET6
 typedef SOCKET SocketHandle;
+typedef int SocketSize_t;
 #define InvalidHandle INVALID_SOCKET
 #define SocketError SOCKET_ERROR
 #else // ! _WINDOWS
@@ -26,6 +27,7 @@ typedef SOCKET SocketHandle;
 #include <sys/socket.h>
 #include <sys/select.h>
 typedef int SocketHandle;
+typedef socklen_t SocketSize_t;
 #define InvalidHandle (SocketHandle)(-1)
 #define SocketError -1
 #endif //_WINDOWS
@@ -74,6 +76,72 @@ namespace T
 			return mType;
 		}
 		/**
+		 * Return reused address option value
+		 */
+		inline bool optReusedAddress()
+		{
+			return mOptReusedAddr;
+		}
+		/**
+		 * Set reused address option
+		 */
+		bool setOptReusedAddress(bool bReused);
+		/**
+		 * Return non-blocking option value
+		 */
+		inline bool optNonBlocking()
+		{
+			return mOptNonBlocking;
+		}
+		/**
+		 * Set non-blocking option
+		 */
+		bool setOptNonBlocking(bool bNonBlock);
+		/**
+		 * Return receive buffer size
+		 */
+		inline int optRecvBufferSize()
+		{
+			return mOptRecvBufferSize;
+		}
+		/**
+		 * Set receive buffer size
+		 */
+		bool setOptRecvBufferSize(int nSize);
+		/**
+		 * Return receive timeout
+		 */
+		inline int optRecvTimeout()
+		{
+			return mOptRecvTimeout;
+		}
+		/**
+		 * Set receive timeout
+		 */
+		bool setOptRecvTimeout(int timeout_ms);
+		/**
+		 * Return send buffer size
+		 */
+		inline int optSendBufferSize()
+		{
+			return mOptSendBufferSize;
+		}
+		/**
+		 * Set send buffer size
+		 */
+		bool setOptSendBufferSize(int nSize);
+		/**
+		 * Return send timeout
+		 */
+		int optSendTimeout()
+		{
+			return mOptSendTimeout;
+		}
+		/**
+		 * Set send timeout
+		 */
+		bool setOptSendTimeout(int timeout_ms);
+		/**
 		 * Close created socket
 		 */
 		bool Close();
@@ -114,6 +182,30 @@ namespace T
 		 * Socket's type
 		 */
 		int mType;
+		/**
+		 * Reused address option
+		 */
+		bool mOptReusedAddr;
+		/**
+		 * Received buffer size
+		 */
+		int mOptRecvBufferSize;
+		/**
+		 * Send buffer size
+		 */
+		int mOptSendBufferSize;
+		/**
+		 * Send timeout
+		 */
+		int mOptSendTimeout;
+		/**
+		 * Receive timeout
+		 */
+		int mOptRecvTimeout;
+		/**
+		 * Non-blocking mode status
+		 */
+		bool mOptNonBlocking;
 
 	protected:
 		/**
@@ -148,7 +240,6 @@ namespace T
 		 * Sends data to a specific destination
 		 */
 		virtual int SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags = 0);
-
 	protected:
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) { return nullptr; }
 	};

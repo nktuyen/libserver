@@ -1,56 +1,69 @@
 #include <iostream>
 #include <cstdio>
 #include "Logger.hpp"
-#include "SocketTCPv6.hpp"
+#include "ConnectionTCPv4.hpp"
 #include "ServerTCPv4.hpp"
+#include "SocketTCPv4.hpp"
+
+class MyServer;
+class MyConnection : public T::ConnectionTCPv4
+{
+public:
+    MyConnection(MyServer *pServer, T::Socket *pSocket);
+    virtual ~MyConnection() override {}
+
+protected:
+    void onData(const char *data, int len)
+    {
+        char *buf = new char[len + 255];
+        memset(buf, 0, len + 255);
+        snprintf(buf, len + 255, "%s\n", data);
+        printf(buf);
+        delete[] buf;
+    }
+};
+
+class MyServer : public T::ServerTCPv4
+{
+public:
+    MyServer(const char *ip, unsigned short port) : T::ServerTCPv4(ip, port) {}
+    virtual ~MyServer() override {}
+
+protected:
+    T::Connection *onNewConnection(T::Socket *pSocket) override { return new MyConnection(this, pSocket); }
+};
+
+MyConnection::MyConnection(MyServer *pServer, T::Socket *pSocket)
+    : T::ConnectionTCPv4(pServer, pSocket)
+{
+    FI();
+
+    FO();
+}
 
 int main(int argc, char *argv[])
 {
     T::Logger::Init("libserver");
-
 #ifdef _WINDOWS
 #pragma comment(lib, "Ws2_32.lib")
     WSADATA wsd = {0};
     WSAStartup(MAKEWORD(2, 2), &wsd);
 #endif //_WINDOWS
-#if 0
-    T::SocketTCPv6 socket;
-    bool res = socket.Create();
-    printf("Create result:%d\n", res);
-    bool b = socket.optNonBlocking();
-    printf("Non-Blocking option:%d\n", b);
-    b = socket.optReusedAddress();
-    printf("Re-used address:%d\n", b);
-    int i = socket.optRecvBufferSize();
-    printf("Receive buffer size:%d\n", i);
-    i = socket.optRecvTimeout();
-    printf("Receive timeout:%d\n", i);
-    i = socket.optSendBufferSize();
-    printf("Send buffer size:%d\n", i);
-    i = socket.optSendTimeout();
-    printf("Send timeout:%d\n", i);
+    char ip[SERVER_IP_LEN] = {0};
+    unsigned port = 0;
+    if (argc > 1)
+    {
+        strncpy(ip, argv[1], SERVER_IP_LEN);
+    }
+    if (argc > 1)
+    {
+        port = std::atoi(argv[2]);
+    }
 
-    socket.setOptNonBlocking(true);
-    socket.setOptReusedAddress(true);
+    std::cout << "Hello, World!\n";
 
-    printf("=============================================\n");
-    b = socket.optNonBlocking();
-    printf("Non-Blocking option:%d\n", b);
-    b = socket.optReusedAddress();
-    printf("Re-used address:%d\n", b);
-    i = socket.optRecvBufferSize();
-    printf("Receive buffer size:%d\n", i);
-    i = socket.optRecvTimeout();
-    printf("Receive timeout:%d\n", i);
-    i = socket.optSendBufferSize();
-    printf("Send buffer size:%d\n", i);
-    i = socket.optSendTimeout();
-    printf("Send timeout:%d\n", i);
-
-    res = socket.Close();
-#endif
-    T::ServerTCPv4 server("127.0.0.1", 5678);
-    server.Start();
-
+    MyServer server(ip, port);
+    if (!server.Start())
+        return 1;
     return server.Wait();
 }

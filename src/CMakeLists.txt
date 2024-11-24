@@ -34,3 +34,4 @@ add_executable(test
 )
 
 target_link_libraries(test libserver pthread)
+target_compile_definitions(test PUBLIC __DEBUG__=1)

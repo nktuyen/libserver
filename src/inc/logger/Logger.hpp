@@ -42,7 +42,7 @@ namespace T
 		/**
 		 * Write a line of trace log
 		 */
-		static void Log(const char *sourceFile, int lineNo, LogLevel level, const char *format, ...);
+		static void Log(const char *sourceFile, int lineNo, T::LogLevel level, const char *format, ...);
 		/**
 		 * Shorten file path
 		 */
@@ -51,9 +51,9 @@ namespace T
 			std::string source(input);
 			std::vector<int> separators;
 #ifdef _WINDOWS
-			char sep[2] = { '\\', '\0' };
+			char sep[2] = {'\\', '\0'};
 #else  // ! _WINDOWS
-			char sep[2] = { '/', '\0' };
+			char sep[2] = {'/', '\0'};
 #endif //_WINDOWS
 			int pos = source.find(sep);
 			while (pos != -1)
@@ -73,13 +73,12 @@ namespace T
 			else
 				return source.substr(separators[idx] + 1);
 		}
+
 	private:
 		/**
 		 * Constructor
 		 */
 		explicit Logger();
-		
-		
 
 	private:
 		static int sEnabledLevels;
@@ -89,15 +88,16 @@ namespace T
 		static std::string sAppName;
 	};
 
+#define _DEBUG
 #if defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG)
-#define LOGD(fmt, ...) Logger::Log(Logger :: shorten(__FILE__).c_str(), __LINE__, LogLevel::DEBUG, fmt, ##__VA_ARGS__)
+#define LOGD(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::DEBUG, fmt, ##__VA_ARGS__)
 #else
 #define LOGD(fmt, ...)
 #endif // defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG)
-#define LOGI(fmt, ...) Logger::Log(Logger : shorten(__FILE__).c_str(), __LINE__, LogLevel::INFO, fmt, ##__VA_ARGS__)
-#define LOGW(fmt, ...) Logger::Log(Logger : shorten(__FILE__).c_str(), __LINE__, LogLevel::WARN, fmt, ##__VA_ARGS__)
-#define LOGE(fmt, ...) Logger::Log(Logger : shorten(__FILE__).c_str(), __LINE__, LogLevel::ERR, fmt, ##__VA_ARGS__)
-#define LOGF(fmt, ...) Logger::Log(Logger : shorten(__FILE__).c_str(), __LINE__, LogLevel::FATAL, fmt, ##__VA_ARGS__)
+#define LOGI(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::INFO, fmt, ##__VA_ARGS__)
+#define LOGW(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::WARN, fmt, ##__VA_ARGS__)
+#define LOGE(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::ERR, fmt, ##__VA_ARGS__)
+#define LOGF(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::FATAL, fmt, ##__VA_ARGS__)
 
 #define FI() LOGD("%s[IN]", __FUNCTION__)
 #define FO() LOGD("%s[OUT]", __FUNCTION__)

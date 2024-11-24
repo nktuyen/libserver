@@ -33,7 +33,7 @@ namespace T
 		/**
 		 * Create thread
 		 */
-		virtual bool Create(int statckSize = 0);
+		virtual bool Create(int stackSize = 0);
 		/**
 		 * Return thread's handle
 		 */
@@ -53,14 +53,21 @@ namespace T
 		 * Return running status
 		 */
 		bool isRunning();
-
+		/**
+		 * Return thread's exit code
+		 */
+#ifdef _WINDOWS
+		inline DWORD exitCode() { return mExitCode; }
+#else  //! _WINDOWS
+		inline int exitCode() { return mExitCode; }
+#endif //_WINDOWS
 	private:
 		ThreadHandle mHandle;
 		bool mRunning;
 		std::mutex mMutex;
 #ifdef _WINDOWS
 		friend static DWORD WINAPI ThreadProc(LPVOID lpParam);
-		DWORD WINAPI ThreadProc(LPVOID lpParam);
+		static DWORD WINAPI ThreadProc(LPVOID lpParam);
 		DWORD mExitCode;
 #else  // ! _WINDOWS
 		pthread_t mThread;
@@ -80,7 +87,7 @@ namespace T
 		/**
 		 * Callback method that will be called when thread is finished and success.
 		 */
-		void onSuccess() { ; }
+		virtual void onSuccess() { ; }
 
 		/**
 		 * Callback method that will be called when thread is finished due to a failure.

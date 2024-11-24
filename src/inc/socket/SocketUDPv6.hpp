@@ -12,18 +12,22 @@
 
 namespace T
 {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	class SocketUDPv6 : public SocketUDP
 	{
-
-	public:
+	protected:
 		/**
 		 * Constructor
 		 */
-		SocketUDPv6();
+		explicit SocketUDPv6();
+
+	public:
 		/**
 		 * Destructor
 		 */
-		~SocketUDPv6();
+		virtual ~SocketUDPv6();
 	};
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 #endif // !defined(EA_3502A567_9995_4935_9C3B_9BD184086634__INCLUDED_)

@@ -14,16 +14,20 @@ namespace T
 {
 	class SocketTCPv6 : public SocketTCP
 	{
+		friend class ServerTCPv6;
+		friend class ConnectionTCPv6;
 
-	public:
+	protected:
 		/**
 		 * Constructor
 		 */
-		SocketTCPv6();
+		explicit SocketTCPv6();
+
+	public:
 		/**
 		 * Destructor
 		 */
-		~SocketTCPv6();
+		virtual ~SocketTCPv6();
 
 	protected:
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCPv6(); };

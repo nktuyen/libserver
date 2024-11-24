@@ -36,13 +36,16 @@ namespace T
 {
 	class Socket
 	{
-	public:
-		Socket();
+		friend class Connection;
+		friend class Server;
 
+	protected:
 		/**
 		 * Constructor
 		 */
 		explicit Socket(int nFamily, int nType, int nProtocol = 0);
+
+	public:
 		/**
 		 * Destructor
 		 */
@@ -153,17 +156,17 @@ namespace T
 		 * Determines whether the socket is readable or not, waiting if necessary, to
 		 * perform synchronous I/O
 		 */
-		bool isReadable(unsigned int timeout_ms);
+		bool isReadable(unsigned int timeout_ms = 0);
 		/**
 		 * Determines whether the socket is writable or not, waiting if necessary, to
 		 * perform synchronous I/O
 		 */
-		bool isWritable(unsigned int timeout_ms);
+		bool isWritable(unsigned int timeout_ms = 0);
 		/**
 		 * Determines whether the socket is writable/readable or not, waiting if necessary, to
 		 * perform synchronous I/O
 		 */
-		bool isReadWritable(unsigned int timeout_ms);
+		bool isReadWritable(unsigned int timeout_ms = 0);
 
 	private:
 		/**
@@ -227,11 +230,11 @@ namespace T
 		/**
 		 * Receives data from a connected socket or a bound connectionless socket
 		 */
-		virtual int Receive(char *buffer, int len, int flags);
+		virtual int Receive(char *buffer, int len, int flags = 0);
 		/**
 		 * Sends data on a connected socket
 		 */
-		virtual int Send(const char *buffer, int len, int flags);
+		virtual int Send(const char *buffer, int len, int flags = 0);
 		/**
 		 * Receives a datagram and stores the source address
 		 */

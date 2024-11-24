@@ -20,10 +20,10 @@ namespace T
     {
         FI();
 
-        memset(mIP, 0, SERVER_IP_LEN);
+        memset(mIPAddr, 0, SERVER_IP_LEN);
         if (ip != nullptr)
         {
-            strncpy(mIP, ip, SERVER_IP_LEN);
+            strncpy(mIPAddr, ip, SERVER_IP_LEN);
         }
 
         FO();
@@ -39,5 +39,30 @@ namespace T
         FO();
     }
 
+    void Server ::onConnectionClose(Connection *conn)
+    {
+        FI();
+        if (conn == nullptr)
+        {
+            FO();
+            return;
+        }
+
+        if (conn->handle() == InvalidConnection)
+        {
+            FO();
+            return;
+        }
+
+        auto ite = mConnMap.find(conn->handle());
+        if (ite != mConnMap.end())
+        {
+            Connection *pConn = ite->second;
+            delete pConn;
+            mConnMap.erase(ite);
+        }
+
+        FO();
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 }

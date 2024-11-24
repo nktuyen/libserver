@@ -8,15 +8,19 @@
 #if !defined(EA_E83377D8_4BD7_4cf3_91A7_1D9D355E5DDE__INCLUDED_)
 #define EA_E83377D8_4BD7_4cf3_91A7_1D9D355E5DDE__INCLUDED_
 #include "Thread.hpp"
+#include "Socket.hpp"
+#include "Connection.hpp"
+#include <map>
 
 #define SERVER_IP_LEN 64
 
 namespace T
 {
-	class Socket;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	class Server : public Thread
 	{
+		friend class Connection;
+
 	protected:
 		/**
 		 * Constructor
@@ -25,7 +29,7 @@ namespace T
 		/**
 		 * Create server and enter thread loop
 		 */
-		virtual bool Create(int statckSize = 0) override;
+		virtual bool Create(int statckSize = 0) override { return Thread::Create(statckSize); }
 
 	public:
 		/**
@@ -35,20 +39,35 @@ namespace T
 		/**
 		 * Return server's ip address
 		 */
-		inline const char *ip() { return mIP; }
+		inline const char *ip() { return mIPAddr; }
 		/**
 		 * Return server's port
 		 */
 		inline unsigned short port() { return mPort; }
 		/**
+		 * Return socket
+		 */
+		inline Socket *socket() { return mSocket; }
+		/**
 		 * Start server
 		 */
-		bool Start() { return Thread::Create(); }
+		inline bool Start() { return Thread::Create(); }
 
-	private:
+	protected:
+		/**
+		 * The callback method that will be called when a connection is closed
+		 */
+		virtual void onConnectionClose(Connection *conn);
+		/**
+		 * The callback method that will be called after a socket is accepted
+		 */
+		virtual Connection *onNewConnection(Socket *pSocket) { return nullptr; }
+
+	protected:
 		Socket *mSocket;
 		char mIPAddr[SERVER_IP_LEN];
 		unsigned short mPort;
+		std::map<ConnectionHandle, Connection *> mConnMap;
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

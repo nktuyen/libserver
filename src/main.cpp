@@ -1,10 +1,19 @@
 #include <iostream>
 #include <cstdio>
+#include "Logger.hpp"
 #include "SocketTCPv6.hpp"
-#include "Server.hpp"
+#include "ServerTCPv4.hpp"
 
 int main(int argc, char *argv[])
 {
+    T::Logger::Init("libserver");
+
+#ifdef _WINDOWS
+#pragma comment(lib, "Ws2_32.lib")
+    WSADATA wsd = {0};
+    WSAStartup(MAKEWORD(2, 2), &wsd);
+#endif //_WINDOWS
+#if 0
     T::SocketTCPv6 socket;
     bool res = socket.Create();
     printf("Create result:%d\n", res);
@@ -39,10 +48,9 @@ int main(int argc, char *argv[])
     printf("Send timeout:%d\n", i);
 
     res = socket.Close();
+#endif
+    T::ServerTCPv4 server("127.0.0.1", 5678);
+    server.Start();
 
-    T::Server server;
-    server.Create();
-    server.Wait();
-
-    return 0;
+    return server.Wait();
 }

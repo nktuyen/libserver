@@ -7,6 +7,7 @@ include_directories(libserver PUBLIC
     inc/logger
     inc/thread
     inc/server
+    inc/connection
 )
 
 add_library(libserver
@@ -19,11 +20,17 @@ add_library(libserver
     src/socket/SocketUDPv6.cpp
     src/socket/SocketTCPv4.cpp
     src/socket/SocketTCPv6.cpp
-    src/server/server.cpp
+    src/server/Server.cpp
+    src/connection/Connection.cpp
+    src/connection/ConnectionTCP.cpp
+    src/connection/ConnectionTCPv4.cpp
+    src/server/ServerTCP.cpp
+    src/server/ServerTCPv4.cpp
+    
 )
 
 add_executable(test
     main.cpp
 )
 
-target_link_libraries(test libserver)
+target_link_libraries(test libserver pthread)

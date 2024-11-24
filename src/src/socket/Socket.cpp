@@ -314,11 +314,8 @@ namespace T
 	 */
 	bool Socket::isReadable(unsigned int timeout_ms)
 	{
-		FI();
-
 		if (mHandle == InvalidHandle)
 		{
-			FO();
 			return false;
 		}
 
@@ -331,11 +328,9 @@ namespace T
 		int res = ::select(mHandle, &readfd, nullptr, nullptr, &timeout);
 		if (res <= 0)
 		{
-			FO();
 			return false;
 		}
 
-		FO();
 		return FD_ISSET(mHandle, &readfd);
 	}
 
@@ -345,11 +340,8 @@ namespace T
 	 */
 	bool Socket::isWritable(unsigned int timeout_ms)
 	{
-		FI();
-
 		if (mHandle == InvalidHandle)
 		{
-			FO();
 			return false;
 		}
 
@@ -362,11 +354,9 @@ namespace T
 		int res = ::select(mHandle, nullptr, &writefd, nullptr, &timeout);
 		if (res <= 0)
 		{
-			FO();
 			return false;
 		}
 
-		FO();
 		return FD_ISSET(mHandle, &writefd);
 	}
 
@@ -376,11 +366,9 @@ namespace T
 	 */
 	bool Socket::isReadWritable(unsigned int timeout_ms)
 	{
-		FI();
 
 		if (mHandle == InvalidHandle)
 		{
-			FO();
 			return false;
 		}
 
@@ -396,11 +384,9 @@ namespace T
 		int res = ::select(mHandle, &readfd, &writefd, nullptr, &timeout);
 		if (res <= 0)
 		{
-			FO();
 			return false;
 		}
 
-		FO();
 		return (FD_ISSET(mHandle, &writefd)) || (FD_ISSET(mHandle, &readfd));
 	}
 

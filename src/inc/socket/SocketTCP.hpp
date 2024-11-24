@@ -14,14 +14,16 @@ namespace T
 {
 	class SocketTCP : public Socket
 	{
+		friend class ServerTCP;
+		friend class ConnectionTCP;
 
-	public:
-		SocketTCP();
-
+	protected:
 		/**
 		 * Constructor
 		 */
-		SocketTCP(int nFamily);
+		explicit SocketTCP(int nFamily);
+
+	public:
 		/**
 		 * Destructor
 		 */
@@ -41,11 +43,11 @@ namespace T
 		/**
 		 * Receives data from a connected socket or a bound connectionless socket
 		 */
-		virtual int Receive(char *buffer, int len, int flags) override;
+		virtual int Receive(char *buffer, int len, int flags = 0) override;
 		/**
 		 * Sends data on a connected socket
 		 */
-		virtual int Send(const char *buffer, int len, int flags) override;
+		virtual int Send(const char *buffer, int len, int flags = 0) override;
 
 	protected:
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCP(nFamily); };

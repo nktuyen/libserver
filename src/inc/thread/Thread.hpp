@@ -27,17 +27,13 @@ namespace T
 
 	public:
 		/**
-		 * Constructor
-		 */
-		explicit Thread();
-		/**
 		 * Destructor
 		 */
 		virtual ~Thread();
 		/**
 		 * Create thread
 		 */
-		bool Create(int statckSize = 0);
+		virtual bool Create(int statckSize = 0);
 		/**
 		 * Return thread's handle
 		 */
@@ -63,8 +59,8 @@ namespace T
 		bool mRunning;
 		std::mutex mMutex;
 #ifdef _WINDOWS
-		friend DWORD WINAPI ThreadProc(LPVOID lpParam);
-		static DWORD WINAPI ThreadProc(LPVOID lpParam);
+		friend static DWORD WINAPI ThreadProc(LPVOID lpParam);
+		DWORD WINAPI ThreadProc(LPVOID lpParam);
 		DWORD mExitCode;
 #else  // ! _WINDOWS
 		pthread_t mThread;
@@ -90,6 +86,10 @@ namespace T
 		 * Callback method that will be called when thread is finished due to a failure.
 		 */
 		virtual int onFailure() { return 0; }
+		/**
+		 * Constructor
+		 */
+		explicit Thread();
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

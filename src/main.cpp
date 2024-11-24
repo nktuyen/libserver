@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "SocketTCPv6.hpp"
-#include "Thread.hpp"
+#include "Server.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -40,10 +40,9 @@ int main(int argc, char *argv[])
 
     res = socket.Close();
 
-
-	T::Thread t;
-	t.Create();
-	t.Stop();
+    T::Server server;
+    server.Create();
+    server.Wait();
 
     return 0;
 }

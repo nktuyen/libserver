@@ -325,13 +325,13 @@ namespace T
 		FD_ZERO(&readfd);
 		FD_SET(mHandle, &readfd);
 
-		int res = ::select(mHandle, &readfd, nullptr, nullptr, &timeout);
+		int res = ::select(mHandle + 1, &readfd, nullptr, nullptr, &timeout);
 		if (res <= 0)
 		{
 			return false;
 		}
 
-		return FD_ISSET(mHandle, &readfd);
+		return FD_ISSET(mHandle, &readfd) > 0;
 	}
 
 	/**
@@ -351,13 +351,13 @@ namespace T
 		FD_ZERO(&writefd);
 		FD_SET(mHandle, &writefd);
 
-		int res = ::select(mHandle, nullptr, &writefd, nullptr, &timeout);
+		int res = ::select(mHandle + 1, nullptr, &writefd, nullptr, &timeout);
 		if (res <= 0)
 		{
 			return false;
 		}
 
-		return FD_ISSET(mHandle, &writefd);
+		return FD_ISSET(mHandle, &writefd) > 0;
 	}
 
 	/**
@@ -369,6 +369,7 @@ namespace T
 
 		if (mHandle == InvalidHandle)
 		{
+			FO();
 			return false;
 		}
 
@@ -381,13 +382,13 @@ namespace T
 		FD_SET(mHandle, &writefd);
 		FD_SET(mHandle, &readfd);
 
-		int res = ::select(mHandle, &readfd, &writefd, nullptr, &timeout);
+		int res = ::select(mHandle + 1, &readfd, &writefd, nullptr, &timeout);
 		if (res <= 0)
 		{
 			return false;
 		}
 
-		return (FD_ISSET(mHandle, &writefd)) || (FD_ISSET(mHandle, &readfd));
+		return (FD_ISSET(mHandle, &writefd) > 0) || (FD_ISSET(mHandle, &readfd) > 0);
 	}
 
 	/**

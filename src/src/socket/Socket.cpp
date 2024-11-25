@@ -31,6 +31,8 @@ namespace T
 	{
 		FI();
 
+		FM(":nFamily=%d, nType=%d, nProtocol=%d", nFamily, nType, nProtocol);
+
 		FO();
 	}
 
@@ -65,6 +67,7 @@ namespace T
 			mHandle = InvalidHandle;
 		}
 
+		FM(":res = %d, res");
 		FO();
 		return res != SocketError;
 	}
@@ -215,13 +218,14 @@ namespace T
 			FO();
 			return false;
 		}
-		
+
 		struct sockaddr_in addrinfo = {0};
 		addrinfo.sin_family = mFamily;
 		addrinfo.sin_port = htons(port);
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
 		int res = ::bind(mHandle, reinterpret_cast<sockaddr *>(&addrinfo), sizeof(addrinfo));
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -241,6 +245,7 @@ namespace T
 
 		int res = ::listen(mHandle, backlog);
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 		;
@@ -266,6 +271,7 @@ namespace T
 
 		int res = ::connect(mHandle, reinterpret_cast<sockaddr *>(&addrinfo), sizeof(addrinfo));
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -405,8 +411,10 @@ namespace T
 			return SocketError;
 		}
 
+		int res = ::recv(mHandle, buffer, len, flags);
+		FM(":res=%d", res);
 		FO();
-		return ::recv(mHandle, buffer, len, flags);
+		return res;
 	}
 
 	/**
@@ -428,8 +436,10 @@ namespace T
 		addrinfo.sin_port = htons(port);
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
 
+		int res = ::recvfrom(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), &outlen);
+		FM(":res=%d", res);
 		FO();
-		return ::recvfrom(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), &outlen);
+		return res;
 	}
 
 	/**
@@ -445,8 +455,10 @@ namespace T
 			return SocketError;
 		}
 
+		int res = ::send(mHandle, buffer, len, flags);
+		FM(":res=%d", res);
 		FO();
-		return ::send(mHandle, buffer, len, flags);
+		return res;
 	}
 
 	/**
@@ -468,8 +480,10 @@ namespace T
 		addrinfo.sin_port = htons(port);
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
 
+		int res = ::sendto(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), outlen);
+		FM(":res=%d", res);
 		FO();
-		return ::sendto(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), outlen);
+		return res;
 	}
 
 	/**
@@ -478,7 +492,7 @@ namespace T
 	bool Socket::setOptNonBlocking(bool bNonBlocking)
 	{
 		FI();
-
+		FM(":bNonBlocking=%d", bNonBlocking);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -495,6 +509,7 @@ namespace T
 #endif //_WINDOWS
 		mOptNonBlocking = bNonBlocking;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -505,7 +520,7 @@ namespace T
 	bool Socket::setOptReusedAddress(bool bReused)
 	{
 		FI();
-
+		FM(":bReused=%d", bReused);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -518,6 +533,7 @@ namespace T
 		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_REUSEADDR, buffer, len);
 		mOptReusedAddr = bReused;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -528,6 +544,7 @@ namespace T
 	bool Socket::setOptRecvBufferSize(int nSize)
 	{
 		FI();
+		FM(":nSize=%d", nSize);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -540,6 +557,7 @@ namespace T
 		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVBUF, buffer, len);
 		mOptRecvBufferSize = nSize;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -550,6 +568,7 @@ namespace T
 	bool Socket::setOptRecvTimeout(int timeout_ms)
 	{
 		FI();
+		FM(":timeout_ms=%d", timeout_ms);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -562,6 +581,7 @@ namespace T
 		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_RCVTIMEO, buffer, len);
 		mOptRecvTimeout = timeout_ms;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -572,6 +592,7 @@ namespace T
 	bool Socket::setOptSendBufferSize(int nSize)
 	{
 		FI();
+		FM(":nSize=%d", nSize);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -584,6 +605,7 @@ namespace T
 		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDBUF, buffer, len);
 		mOptSendBufferSize = nSize;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}
@@ -594,6 +616,7 @@ namespace T
 	bool Socket::setOptSendTimeout(int timeout_ms)
 	{
 		FI();
+		FM(":timeout_ms=%d", timeout_ms);
 		if (mHandle == InvalidHandle)
 		{
 			FO();
@@ -606,6 +629,7 @@ namespace T
 		int res = ::setsockopt(mHandle, SOL_SOCKET, SO_SNDTIMEO, buffer, len);
 		mOptSendTimeout = timeout_ms;
 
+		FM(":res=%d", res);
 		FO();
 		return res != SocketError;
 	}

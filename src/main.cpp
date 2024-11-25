@@ -1,12 +1,12 @@
 #include <iostream>
 #include <cstdio>
 #include "Logger.hpp"
-#include "ConnectionTCPv6.hpp"
-#include "ServerTCPv6.hpp"
-#include "SocketTCPv6.hpp"
+#include "ConnectionTCPv4.hpp"
+#include "ServerTCPv4.hpp"
+#include "SocketTCPv4.hpp"
 
 class MyServer;
-class MyConnection : public T::ConnectionTCPv6
+class MyConnection : public T::ConnectionTCPv4
 {
 public:
     MyConnection(MyServer *pServer, T::Socket *pSocket);
@@ -20,7 +20,7 @@ protected:
             char *buf = new char[len + 255];
             memset(buf, 0, len + 255);
             snprintf(buf, len + 255, "You said %s", data);
-            T::SocketTCPv6 *pSocket = reinterpret_cast<T::SocketTCPv6 *>(socket());
+            T::SocketTCPv4 *pSocket = reinterpret_cast<T::SocketTCPv4 *>(socket());
             if (pSocket != nullptr)
                 pSocket->Send(buf, len + 255);
 
@@ -29,10 +29,10 @@ protected:
     }
 };
 
-class MyServer : public T::ServerTCPv6
+class MyServer : public T::ServerTCPv4
 {
 public:
-    MyServer(const char *ip, unsigned short port) : T::ServerTCPv6(ip, port) {}
+    MyServer(const char *ip, unsigned short port) : T::ServerTCPv4(ip, port) {}
     virtual ~MyServer() override {}
 
 protected:
@@ -40,7 +40,7 @@ protected:
 };
 
 MyConnection::MyConnection(MyServer *pServer, T::Socket *pSocket)
-    : T::ConnectionTCPv6(pServer, pSocket, true, 5)
+    : T::ConnectionTCPv4(pServer, pSocket, true, 5)
 {
     FI();
 

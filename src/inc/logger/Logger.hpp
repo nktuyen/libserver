@@ -42,7 +42,7 @@ namespace T
 		/**
 		 * Write a line of trace log
 		 */
-		static void Log(const char *sourceFile, int lineNo, T::LogLevel level, const char *format, ...);
+		static void Log(const char *sourceFile, int lineNo, const char *func, T::LogLevel level, const char *format, ...);
 		/**
 		 * Shorten file path
 		 */
@@ -90,18 +90,19 @@ namespace T
 
 #define _DEBUG
 #if defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG)
-#define LOGD(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::DEBUG, fmt, ##__VA_ARGS__)
+#define LOGD(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::DEBUG, fmt, ##__VA_ARGS__)
 #else
 #define LOGD(fmt, ...)
 #endif // defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG)
-#define LOGI(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::INFO, fmt, ##__VA_ARGS__)
-#define LOGW(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::WARN, fmt, ##__VA_ARGS__)
-#define LOGE(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::ERR, fmt, ##__VA_ARGS__)
-#define LOGF(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, T::LogLevel::FATAL, fmt, ##__VA_ARGS__)
+#define LOGI(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::INFO, fmt, ##__VA_ARGS__)
+#define LOGW(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::WARN, fmt, ##__VA_ARGS__)
+#define LOGE(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::ERR, fmt, ##__VA_ARGS__)
+#define LOGF(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::FATAL, fmt, ##__VA_ARGS__)
 
-#define FI() LOGD("%s[IN]", __FUNCTION__)
-#define FO() LOGD("%s[OUT]", __FUNCTION__)
-#define FS(s) LOGD("%s:%s", __FUNCTION__, s)
+#define FI() LOGD("[IN]")
+#define FM(fmt, ...) LOGD(fmt, ##__VA_ARGS__)
+#define FO() LOGD("[OUT]")
+#define FS(s) LOGD(":%s", s)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

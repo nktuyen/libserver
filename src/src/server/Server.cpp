@@ -26,6 +26,8 @@ namespace T
             strncpy(mIPAddr, ip, SERVER_IP_LEN);
         }
 
+        FM("mIPAddr=%s, mPort=%d", mIPAddr, mPort);
+
         FO();
     }
 

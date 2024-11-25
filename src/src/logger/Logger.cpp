@@ -65,7 +65,7 @@ namespace T
 	/**
 	 * Write a line of trace log
 	 */
-	void Logger::Log(const char *sourceFile, int lineNo, LogLevel level, const char *format, ...)
+	void Logger::Log(const char *sourceFile, int lineNo, const char *func, LogLevel level, const char *format, ...)
 	{
 		if ((level & sEnabledLevels) == 0)
 		{
@@ -94,33 +94,33 @@ namespace T
 		{
 		case LogLevel::DEBUG:
 			if (sLogStream.is_open())
-				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][D]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][D]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			else
-				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][D]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][D]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			break;
 		case LogLevel::INFO:
 			if (sLogStream.is_open())
-				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][I]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][I]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			else
-				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][I]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][I]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			break;
 		case LogLevel::WARN:
 			if (sLogStream.is_open())
-				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][W]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][W]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			else
-				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][W]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][W]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			break;
 		case LogLevel::ERR:
 			if (sLogStream.is_open())
-				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][E]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][E]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			else
-				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][E]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][E]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			break;
 		case LogLevel::FATAL:
 			if (sLogStream.is_open())
-				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][F]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				sLogStream << sIndex << " " << date_time << "[" << sAppName.c_str() << "][F]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			else
-				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][F]" << sourceFile << "[" << lineNo << "]" << log << std::endl;
+				std::cout << sIndex << " " << date_time << "[" << sAppName.c_str() << "][F]" << sourceFile << "[" << lineNo << "]" << "<<" << func << ">>" << log << std::endl;
 			break;
 		default:
 			break;

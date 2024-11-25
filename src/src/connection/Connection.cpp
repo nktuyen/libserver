@@ -95,10 +95,14 @@ namespace T
     Connection::Connection(Server *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
         : Thread(), mServer(pServer), mSocket(pSocket), mAlive(true), mAliveChecker(nullptr)
     {
+        FI();
+
         if (aliveChecker)
         {
             mAliveChecker = new AliveChecker(this, aliveCheckerTimeout);
         }
+
+        FO();
     }
 
     /**

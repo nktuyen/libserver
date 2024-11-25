@@ -17,8 +17,8 @@ namespace T
     /**
      * Constructor
      */
-    ConnectionTCP::ConnectionTCP(ServerTCP *pServer, Socket *pSocket)
-        : Connection(pServer, pSocket), mRecvBuffer(nullptr), mRecvBufSize(0)
+    ConnectionTCP::ConnectionTCP(ServerTCP *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
+        : Connection(pServer, pSocket, aliveChecker, aliveCheckerTimeout), mRecvBuffer(nullptr), mRecvBufSize(0)
     {
         FI();
 
@@ -63,6 +63,11 @@ namespace T
         FI();
 
         SocketTCP *pSocket = reinterpret_cast<SocketTCP *>(socket());
+        if (mAliveChecker != nullptr)
+        {
+            mAliveChecker->Create();
+        }
+
         while (isRunning() && isAlive())
         {
             if (socket()->isReadable())
@@ -71,6 +76,10 @@ namespace T
                 int n = pSocket->Receive(mRecvBuffer, mRecvBufSize);
                 if (n > 0)
                 {
+                    if (mAliveChecker != nullptr)
+                    {
+                        mAliveChecker->Restart();
+                    }
                     this->setAlive(true);
                     this->onData(mRecvBuffer, n);
                 }
@@ -85,6 +94,12 @@ namespace T
                     break;
                 }
             }
+        }
+
+        if (mAliveChecker != nullptr)
+        {
+            if (mAliveChecker->isRunning())
+                mAliveChecker->Stop();
         }
 
         FO();

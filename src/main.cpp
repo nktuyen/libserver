@@ -15,11 +15,17 @@ public:
 protected:
     void onData(const char *data, int len)
     {
-        char *buf = new char[len + 255];
-        memset(buf, 0, len + 255);
-        snprintf(buf, len + 255, "%s\n", data);
-        printf(buf);
-        delete[] buf;
+        if (data != nullptr)
+        {
+            char *buf = new char[len + 255];
+            memset(buf, 0, len + 255);
+            snprintf(buf, len + 255, "You said %s", data);
+            T::SocketTCPv4 *pSocket = reinterpret_cast<T::SocketTCPv4 *>(socket());
+            if (pSocket != nullptr)
+                pSocket->Send(buf, len + 255);
+
+            delete[] buf;
+        }
     }
 };
 
@@ -34,7 +40,7 @@ protected:
 };
 
 MyConnection::MyConnection(MyServer *pServer, T::Socket *pSocket)
-    : T::ConnectionTCPv4(pServer, pSocket)
+    : T::ConnectionTCPv4(pServer, pSocket, true, 5)
 {
     FI();
 
@@ -59,8 +65,6 @@ int main(int argc, char *argv[])
     {
         port = std::atoi(argv[2]);
     }
-
-    std::cout << "Hello, World!\n";
 
     MyServer server(ip, port);
     if (!server.Start())

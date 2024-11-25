@@ -29,7 +29,7 @@ namespace T
 		/**
 		 * Constructor
 		 */
-		explicit ConnectionTCP(ServerTCP *pServer = nullptr, Socket *pSocket = nullptr);
+		explicit ConnectionTCP(ServerTCP *pServer = nullptr, Socket *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
 		/**
 		 * Initialize connection
 		 */

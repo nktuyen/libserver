@@ -36,6 +36,15 @@ namespace T
     {
         FI();
 
+        auto ite = mConnMap.begin();
+        for (; ite != mConnMap.end(); ++ite)
+        {
+            Connection *pConn = ite->second;
+            if (pConn != nullptr)
+                delete pConn;
+        }
+        mConnMap.clear();
+
         FO();
     }
 

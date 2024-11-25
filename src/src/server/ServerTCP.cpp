@@ -63,6 +63,9 @@ namespace T
             return false;
         }
 
+        pSocket->setOptReusedAddress(true);
+        pSocket->setOptNonBlocking(true);
+
         if (!pSocket->Bind(ip(), port()))
         {
             FO();

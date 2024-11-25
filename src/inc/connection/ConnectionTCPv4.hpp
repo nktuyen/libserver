@@ -28,7 +28,7 @@ namespace T
 		/**
 		 * Constructor
 		 */
-		explicit ConnectionTCPv4(ServerTCPv4 *pServer = nullptr, Socket *pSocket = nullptr);
+		explicit ConnectionTCPv4(ServerTCPv4 *pServer = nullptr, Socket *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

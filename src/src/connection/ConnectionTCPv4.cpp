@@ -16,8 +16,8 @@ namespace T
     /**
      * Constructor
      */
-    ConnectionTCPv4::ConnectionTCPv4(ServerTCPv4 *pServer, Socket *pSocket)
-        : ConnectionTCP(pServer, pSocket)
+    ConnectionTCPv4::ConnectionTCPv4(ServerTCPv4 *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
+        : ConnectionTCP(pServer, pSocket, aliveChecker, aliveCheckerTimeout)
     {
     }
 

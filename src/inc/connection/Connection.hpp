@@ -18,9 +18,33 @@ namespace T
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class Server;
 	class Socket;
+	class Connection;
+
+	class AliveChecker : public Thread
+	{
+		friend class Connection;
+
+	private:
+		AliveChecker(Connection *pConn, int timeout_seconds = 60);
+		bool onInitialize() override;
+		int onRun() override;
+		int getElapsed();
+		void setElapsed(int val);
+
+	public:
+		virtual ~AliveChecker();
+		void Restart();
+
+	private:
+		Connection *mConn;
+		int mTimeout;
+		int mElapsed;
+		std::mutex mMutex;
+	};
 
 	class Connection : public Thread
 	{
+		friend class AliveChecker;
 
 	public:
 		/**
@@ -48,7 +72,7 @@ namespace T
 		/**
 		 * Constructor
 		 */
-		explicit Connection(Server *pServer = nullptr, Socket *pSocket = nullptr);
+		explicit Connection(Server *pServer = nullptr, Socket *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
 		/**
 		 * Create connection
 		 */
@@ -69,6 +93,9 @@ namespace T
 		 * Data callback
 		 */
 		virtual void onData(const char *data, int len) { ; }
+
+	protected:
+		AliveChecker *mAliveChecker;
 
 	private:
 		Server *mServer;

@@ -24,9 +24,10 @@ add_library(libserver
     src/connection/Connection.cpp
     src/connection/ConnectionTCP.cpp
     src/connection/ConnectionTCPv4.cpp
+    src/connection/ConnectionTCPv6.cpp
     src/server/ServerTCP.cpp
     src/server/ServerTCPv4.cpp
-    
+    src/server/ServerTCPv6.cpp
 )
 
 add_executable(test

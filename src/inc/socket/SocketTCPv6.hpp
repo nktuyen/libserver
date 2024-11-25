@@ -30,6 +30,11 @@ namespace T
 		virtual ~SocketTCPv6();
 
 	protected:
+		/**
+		 * Associates a local address with a socket
+		 */
+		virtual bool Bind(const char *ip, unsigned short port) override;
+
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCPv6(); };
 	};
 }

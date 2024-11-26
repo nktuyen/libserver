@@ -39,7 +39,10 @@ namespace T
 				pThread->mRunning = true;
 				pThread->mExitCode = pThread->onRun();
 				pThread->mRunning = false;
-				pThread->onSuccess();
+				if (pThread->mExitCode != 0)
+					pThread->mExitCode = pThread->onFailure();
+				else
+					pThread->onSuccess();
 			}
 #ifdef _WINDOWS
 			return pThread->mExitCode;

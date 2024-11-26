@@ -46,6 +46,36 @@ namespace T
         FO();
     }
 
+    bool Server::onInitialize()
+    {
+        FI();
+
+        if (mIPAddr[0] == 0)
+        {
+            FO();
+            return false;
+        }
+
+        if (mSocket == nullptr)
+        {
+            FO();
+            return false;
+        }
+
+
+        if (!mSocket->Create())
+        {
+            FO();
+            return false;
+        }
+
+        mSocket->setOptReusedAddress(true);
+        mSocket->setOptNonBlocking(true);
+
+        FO();
+        return true;
+    }
+
     int Server::onFailure()
     {
         FI();

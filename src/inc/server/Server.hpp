@@ -29,6 +29,10 @@ namespace T
 		 */
 		virtual bool Create(int statckSize = 0) override { return Thread::Create(statckSize); }
 		/**
+		 * Override onInitialize method
+		 */
+		bool onInitialize() override;
+		/**
 		 * Override onFailure method
 		 */
 		virtual int onFailure() override;

@@ -55,34 +55,13 @@ namespace T
     {
         FI();
 
-        if (ip() == nullptr)
-        {
-            FO();
-            return false;
-        }
-
-        if (socket() == nullptr)
+        if (!Server::onInitialize())
         {
             FO();
             return false;
         }
 
         SocketTCP *pSocket = reinterpret_cast<SocketTCP *>(socket());
-        if (pSocket == nullptr)
-        {
-            FO();
-            return false;
-        }
-
-        if (!pSocket->Create())
-        {
-            FO();
-            return false;
-        }
-
-        pSocket->setOptReusedAddress(true);
-        pSocket->setOptNonBlocking(true);
-
         if (!pSocket->Bind(ip(), port()))
         {
             FO();

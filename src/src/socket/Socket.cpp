@@ -18,7 +18,7 @@ namespace T
 	 * Constructor
 	 */
 	Socket::Socket(int nFamily, int nType, int nProtocol)
-		: mHandle(InvalidHandle),
+		: mHandle(InvalidSocketHandle),
 		  mFamily(nFamily),
 		  mType(nType),
 		  mProtocol(nProtocol),
@@ -57,14 +57,14 @@ namespace T
 
 		int res = 0;
 
-		if (mHandle != InvalidHandle)
+		if (mHandle != InvalidSocketHandle)
 		{
 #ifdef _WINDOWS
 			res = ::closesocket(mHandle);
 #else  // ! _WINDOWS
 			res = ::close(mHandle);
 #endif //_WINDOWS
-			mHandle = InvalidHandle;
+			mHandle = InvalidSocketHandle;
 		}
 
 		FM(":res = %d, res");
@@ -77,12 +77,12 @@ namespace T
 	 */
 	Socket &Socket::Attach(SocketHandle hSocket)
 	{
-		if (mHandle != InvalidHandle)
+		if (mHandle != InvalidSocketHandle)
 		{
 			this->Close();
 		}
 		mHandle = hSocket;
-		if (mHandle != InvalidHandle)
+		if (mHandle != InvalidSocketHandle)
 		{
 			// Obtain options
 			char buffer[sizeof(int)] = {0};
@@ -146,7 +146,7 @@ namespace T
 		{
 			mHandle = ::socket(mFamily, mType, mProtocol);
 
-			if (mHandle != InvalidHandle)
+			if (mHandle != InvalidSocketHandle)
 			{
 				// Obtain options
 				char buffer[sizeof(int)] = {0};
@@ -203,7 +203,7 @@ namespace T
 		}
 
 		FO();
-		return mHandle != InvalidHandle;
+		return mHandle != InvalidSocketHandle;
 	}
 
 	/**
@@ -213,7 +213,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -237,7 +237,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -258,7 +258,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -283,7 +283,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return nullptr;
@@ -292,7 +292,7 @@ namespace T
 		struct sockaddr_in addrinfo = {0};
 		SocketSize_t len = sizeof(addrinfo);
 		SocketHandle hSocket = ::accept(mHandle, reinterpret_cast<sockaddr *>(&addrinfo), &len);
-		if (hSocket == InvalidHandle)
+		if (hSocket == InvalidSocketHandle)
 		{
 			FO();
 			return nullptr;
@@ -307,7 +307,7 @@ namespace T
 #else  // ! _WINDOWS
 			::close(hSocket);
 #endif //_WINDOWS
-			hSocket = InvalidHandle;
+			hSocket = InvalidSocketHandle;
 		}
 
 		newSocket->Attach(hSocket);
@@ -321,7 +321,7 @@ namespace T
 	 */
 	bool Socket::isReadable(unsigned int timeout_ms)
 	{
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			return false;
 		}
@@ -347,7 +347,7 @@ namespace T
 	 */
 	bool Socket::isWritable(unsigned int timeout_ms)
 	{
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			return false;
 		}
@@ -374,7 +374,7 @@ namespace T
 	bool Socket::isReadWritable(unsigned int timeout_ms)
 	{
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -405,7 +405,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return SocketError;
@@ -424,7 +424,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return SocketError;
@@ -449,7 +449,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return SocketError;
@@ -468,7 +468,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return SocketError;
@@ -493,7 +493,7 @@ namespace T
 	{
 		FI();
 		FM(":bNonBlocking=%d", bNonBlocking);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -521,7 +521,7 @@ namespace T
 	{
 		FI();
 		FM(":bReused=%d", bReused);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -545,7 +545,7 @@ namespace T
 	{
 		FI();
 		FM(":nSize=%d", nSize);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -569,7 +569,7 @@ namespace T
 	{
 		FI();
 		FM(":timeout_ms=%d", timeout_ms);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -593,7 +593,7 @@ namespace T
 	{
 		FI();
 		FM(":nSize=%d", nSize);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;
@@ -617,7 +617,7 @@ namespace T
 	{
 		FI();
 		FM(":timeout_ms=%d", timeout_ms);
-		if (mHandle == InvalidHandle)
+		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
 			return false;

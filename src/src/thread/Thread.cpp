@@ -58,7 +58,7 @@ namespace T
 	 * Constructor
 	 */
 	Thread::Thread()
-		: mHandle(InvalidThread), mExitCode(0)
+		: mHandle(InvalidThreadHandle), mExitCode(0)
 	{
 		FI();
 
@@ -81,7 +81,7 @@ namespace T
 	{
 		FI();
 
-		if (mHandle != InvalidThread)
+		if (mHandle != InvalidThreadHandle)
 		{
 			FO();
 			throw;
@@ -102,7 +102,7 @@ namespace T
 #endif //_WINDOWS
 
 		FO();
-		return res == 0 && mHandle != InvalidThread;
+		return res == 0 && mHandle != InvalidThreadHandle;
 	}
 
 	/**

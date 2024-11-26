@@ -132,11 +132,11 @@ namespace T
 
     void ConnectionTCP::setAlive(bool bAlive)
     {
-		FI();
-		FM("bAlive = %d", bAlive);
+        FI();
+        FM("bAlive = %d", bAlive);
         std::lock_guard<std::mutex> locker(mALiveMutex);
         mAlive = bAlive;
-		FO();
+        FO();
     }
 
     bool ConnectionTCP::onInitialize()
@@ -179,7 +179,11 @@ namespace T
                         mAliveChecker->Restart();
                     }
                     this->setAlive(true);
-                    this->onData(mRecvBuffer, n);
+                    this->onDataReceived(mRecvBuffer, n);
+                    if (mServer != nullptr)
+                    {
+                        mServer->onDataReceived(mRecvBuffer, n);
+                    }
                 }
                 else if (n == 0)
                 {
@@ -196,10 +200,11 @@ namespace T
 
         if (mAliveChecker != nullptr)
         {
-			if (mAliveChecker->isRunning()) {
-				mAliveChecker->Stop();
-				mAliveChecker->Wait();
-			}
+            if (mAliveChecker->isRunning())
+            {
+                mAliveChecker->Stop();
+                mAliveChecker->Wait();
+            }
         }
 
         FO();
@@ -218,7 +223,7 @@ namespace T
 
         if (mSocket != nullptr)
         {
-            if (mSocket->handle() != InvalidHandle)
+            if (mSocket->handle() != InvalidSocketHandle)
             {
                 mSocket->Close();
             }
@@ -245,7 +250,7 @@ namespace T
 
         if (mSocket != nullptr)
         {
-            if (mSocket->handle() != InvalidHandle)
+            if (mSocket->handle() != InvalidSocketHandle)
             {
                 mSocket->Close();
             }

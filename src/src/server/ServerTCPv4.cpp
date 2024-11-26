@@ -20,6 +20,7 @@ namespace T
         : ServerTCP(ip, port)
     {
         FI();
+        
         mSocket = new SocketTCPv4();
 
         FO();

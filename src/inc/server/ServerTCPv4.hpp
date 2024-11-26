@@ -33,6 +33,10 @@ namespace T
 		 * New connection callback
 		 */
 		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket) override;
+		/**
+		 * Callback method that will be called when data is received
+		 */
+		virtual void onDataReceived(const char *data, int len) override { ; }
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

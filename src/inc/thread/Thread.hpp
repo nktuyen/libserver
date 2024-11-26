@@ -17,7 +17,7 @@ typedef HANDLE ThreadHandle;
 typedef pthread_t *ThreadHandle;
 #endif //_WINDOWS
 
-#define InvalidThread (ThreadHandle)(nullptr)
+#define InvalidThreadHandle (ThreadHandle)(nullptr)
 
 namespace T
 {
@@ -92,7 +92,7 @@ namespace T
 		/**
 		 * Callback method that will be called when thread is finished due to a failure.
 		 */
-		virtual int onFailure() { return 0; }
+		virtual int onFailure() { return 1; }
 		/**
 		 * Constructor
 		 */

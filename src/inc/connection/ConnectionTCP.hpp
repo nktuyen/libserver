@@ -11,7 +11,7 @@
 #include <mutex>
 
 #define ConnectionHandle ThreadHandle
-#define InvalidConnection InvalidThread
+#define InvalidConnection InvalidThreadHandle
 
 namespace T
 {
@@ -96,7 +96,7 @@ namespace T
 		/**
 		 * Data callback
 		 */
-		virtual void onData(const char *data, int len) { ; }
+		virtual void onDataReceived(const char *data, int len) { ; }
 		/**
 		 * Initialize connection
 		 */

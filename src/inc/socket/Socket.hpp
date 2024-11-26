@@ -15,7 +15,7 @@
 #endif // AF_INET6
 typedef SOCKET SocketHandle;
 typedef int SocketSize_t;
-#define InvalidHandle INVALID_SOCKET
+#define InvalidSocketHandle INVALID_SOCKET
 #define SocketError SOCKET_ERROR
 #else // ! _WINDOWS
 #include <unistd.h>
@@ -29,7 +29,7 @@ typedef int SocketSize_t;
 #include <arpa/inet.h>
 typedef int SocketHandle;
 typedef socklen_t SocketSize_t;
-#define InvalidHandle (SocketHandle)(-1)
+#define InvalidSocketHandle (SocketHandle)(-1)
 #define SocketError -1
 #endif //_WINDOWS
 

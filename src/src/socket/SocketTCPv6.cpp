@@ -38,7 +38,7 @@ namespace T
     {
         FI();
 
-        if (handle() == InvalidHandle)
+        if (handle() == InvalidSocketHandle)
         {
             FO();
             return false;

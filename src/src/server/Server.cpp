@@ -38,6 +38,42 @@ namespace T
     {
         FI();
 
+        if (mSocket != nullptr)
+        {
+            delete mSocket;
+        }
+
+        FO();
+    }
+
+    int Server::onFailure()
+    {
+        FI();
+
+        if (mSocket != nullptr)
+        {
+            if (mSocket->handle() != InvalidSocketHandle)
+            {
+                mSocket->Close();
+            }
+        }
+
+        FO();
+        return 1;
+    }
+
+    void Server::onSuccess()
+    {
+        FI();
+
+        if (mSocket != nullptr)
+        {
+            if (mSocket->handle() != InvalidSocketHandle)
+            {
+                mSocket->Close();
+            }
+        }
+
         FO();
     }
 

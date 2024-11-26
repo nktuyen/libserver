@@ -28,6 +28,18 @@ namespace T
 		 * Create server and enter thread loop
 		 */
 		virtual bool Create(int statckSize = 0) override { return Thread::Create(statckSize); }
+		/**
+		 * Override onFailure method
+		 */
+		virtual int onFailure() override;
+		/**
+		 * Override onSuccess method
+		 */
+		virtual void onSuccess() override;
+		/**
+		 * Callback method that will be called when data is received
+		 */
+		virtual void onDataReceived(const char *data, int len) { ; }
 
 	public:
 		/**

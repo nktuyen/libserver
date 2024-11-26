@@ -8,7 +8,7 @@
 #include "SocketTCPv6.hpp"
 #include "Logger.hpp"
 #include <iostream>
-#include <arpa/inet.h>
+
 
 namespace T
 {

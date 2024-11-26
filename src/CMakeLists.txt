@@ -11,22 +11,31 @@ include_directories(libserver PUBLIC
 )
 
 add_library(libserver
+    inc/logger/Logger.hpp
+    inc/thread/Thread.hpp
+    inc/socket/Socket.hpp
+    inc/socket/SocketUDP.hpp
+    inc/socket/SocketTCP.hpp
+    inc/socket/SocketUDPv4.hpp
+    inc/socket/SocketTCPv4.hpp
+    inc/server/Server.hpp
+    inc/connection/ConnectionTCP.hpp
+    inc/connection/ConnectionTCPv4.hpp
+    inc/server/ServerTCP.hpp
+    inc/server/ServerTCPv4.hpp
+
     src/logger/Logger.cpp
     src/thread/Thread.cpp
     src/socket/Socket.cpp
     src/socket/SocketUDP.cpp
     src/socket/SocketTCP.cpp
     src/socket/SocketUDPv4.cpp
-    src/socket/SocketUDPv6.cpp
     src/socket/SocketTCPv4.cpp
-    src/socket/SocketTCPv6.cpp
     src/server/Server.cpp
     src/connection/ConnectionTCP.cpp
     src/connection/ConnectionTCPv4.cpp
-    src/connection/ConnectionTCPv6.cpp
     src/server/ServerTCP.cpp
     src/server/ServerTCPv4.cpp
-    src/server/ServerTCPv6.cpp
 )
 
 add_executable(test

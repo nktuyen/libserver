@@ -132,8 +132,11 @@ namespace T
 
     void ConnectionTCP::setAlive(bool bAlive)
     {
+		FI();
+		FM("bAlive = %d", bAlive);
         std::lock_guard<std::mutex> locker(mALiveMutex);
         mAlive = bAlive;
+		FO();
     }
 
     bool ConnectionTCP::onInitialize()
@@ -193,8 +196,10 @@ namespace T
 
         if (mAliveChecker != nullptr)
         {
-            if (mAliveChecker->isRunning())
-                mAliveChecker->Stop();
+			if (mAliveChecker->isRunning()) {
+				mAliveChecker->Stop();
+				mAliveChecker->Wait();
+			}
         }
 
         FO();

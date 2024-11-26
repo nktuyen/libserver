@@ -11,7 +11,7 @@
 #ifdef _WINDOWS
 #include <Windows.h>
 #ifndef AF_INET6
-#define AF_INET6 10
+#define AF_INET6 23
 #endif // AF_INET6
 typedef SOCKET SocketHandle;
 typedef int SocketSize_t;
@@ -26,6 +26,7 @@ typedef int SocketSize_t;
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <arpa/inet.h>
 typedef int SocketHandle;
 typedef socklen_t SocketSize_t;
 #define InvalidHandle (SocketHandle)(-1)

@@ -1,9 +1,10 @@
 #include <iostream>
 #include <cstdio>
-#include "Logger.hpp"
+#define _DEBUG
 #include "ConnectionTCPv4.hpp"
 #include "ServerTCPv4.hpp"
 #include "SocketTCPv4.hpp"
+#include "Logger.hpp"
 
 class MyServer;
 class MyConnection : public T::ConnectionTCPv4

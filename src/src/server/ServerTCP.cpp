@@ -43,6 +43,14 @@ namespace T
         FO();
     }
 
+    ConnectionTCP *ServerTCP::onNewConnection(SocketTCP *pSocket)
+    {
+        FI();
+
+        FO();
+        return new ConnectionTCP(this, pSocket);
+    }
+
     bool ServerTCP::onInitialize()
     {
         FI();

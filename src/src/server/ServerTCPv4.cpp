@@ -35,5 +35,12 @@ namespace T
         FO();
     }
 
+    ConnectionTCP *ServerTCPv4::onNewConnection(SocketTCP *pSocket)
+    {
+        FI();
+
+        FO();
+        return new ConnectionTCPv4(this, reinterpret_cast<SocketTCPv4 *>(pSocket));
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 }

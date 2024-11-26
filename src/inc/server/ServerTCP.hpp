@@ -45,7 +45,7 @@ namespace T
 		/**
 		 * Override onNewConnection callback method
 		 */
-		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket) { return new ConnectionTCP(this, pSocket); }
+		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket);
 
 	private:
 		std::map<ConnectionHandle, ConnectionTCP *> mConnMap;

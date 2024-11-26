@@ -33,7 +33,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~Server();
+		virtual ~Server() override;
 		/**
 		 * Return server's ip address
 		 */

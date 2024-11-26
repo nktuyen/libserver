@@ -26,7 +26,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~ServerTCPv4();
+		virtual ~ServerTCPv4() override;
 
 	protected:
 		/**

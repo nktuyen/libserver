@@ -32,7 +32,7 @@ namespace T
 		void setElapsed(int val);
 
 	public:
-		virtual ~AliveChecker();
+		virtual ~AliveChecker() override;
 		void Restart();
 
 	private:
@@ -51,11 +51,14 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~ConnectionTCP();
+		virtual ~ConnectionTCP() override;
 		/**
 		 * return associated server
 		 */
-		inline ServerTCP *server() { return mServer; }
+		inline ServerTCP *server()
+		{
+			return mServer;
+		}
 		/**
 		 * Return associated socket
 		 */

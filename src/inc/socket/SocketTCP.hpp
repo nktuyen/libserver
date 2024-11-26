@@ -27,7 +27,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~SocketTCP();
+		virtual ~SocketTCP() override;
 		/**
 		 * Associates a local address with a socket
 		 */

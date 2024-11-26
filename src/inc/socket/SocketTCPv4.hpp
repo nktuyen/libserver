@@ -27,7 +27,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~SocketTCPv4();
+		virtual ~SocketTCPv4() override;
 
 	protected:
 		virtual Socket *onAccepting(SocketHandle hSocket, int nFamily, const char *ip, unsigned short port) override { return new SocketTCPv4(); };

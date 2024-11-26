@@ -25,7 +25,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~SocketUDP();
+		virtual ~SocketUDP() override;
 		/**
 		 * Receives a datagram and stores the source address
 		 */

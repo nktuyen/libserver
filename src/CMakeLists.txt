@@ -23,6 +23,8 @@ add_library(libserver
     inc/connection/ConnectionTCPv4.hpp
     inc/server/ServerTCP.hpp
     inc/server/ServerTCPv4.hpp
+    inc/server/ServerUDP.hpp
+    inc/server/ServerUDPv4.hpp
 
     src/logger/Logger.cpp
     src/thread/Thread.cpp
@@ -36,6 +38,8 @@ add_library(libserver
     src/connection/ConnectionTCPv4.cpp
     src/server/ServerTCP.cpp
     src/server/ServerTCPv4.cpp
+    src/server/ServerUDP.cpp
+    src/server/ServerUDPv4.cpp
 )
 
 add_executable(test

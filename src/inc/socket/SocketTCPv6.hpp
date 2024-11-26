@@ -27,7 +27,7 @@ namespace T
 		/**
 		 * Destructor
 		 */
-		virtual ~SocketTCPv6();
+		virtual ~SocketTCPv6() override;
 
 	protected:
 		/**

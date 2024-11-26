@@ -9,8 +9,6 @@
 #define EA_E83377D8_4BD7_4cf3_91A7_1D9D355E5DDE__INCLUDED_
 #include "Thread.hpp"
 #include "Socket.hpp"
-#include "Connection.hpp"
-#include <map>
 
 #define SERVER_IP_LEN 64
 
@@ -54,20 +52,9 @@ namespace T
 		inline bool Start() { return Thread::Create(); }
 
 	protected:
-		/**
-		 * The callback method that will be called when a connection is closed
-		 */
-		virtual void onConnectionClose(Connection *conn);
-		/**
-		 * The callback method that will be called after a socket is accepted
-		 */
-		virtual Connection *onNewConnection(Socket *pSocket) { return nullptr; }
-
-	protected:
 		Socket *mSocket;
 		char mIPAddr[SERVER_IP_LEN];
 		unsigned short mPort;
-		std::map<ConnectionHandle, Connection *> mConnMap;
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

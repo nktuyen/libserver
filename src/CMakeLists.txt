@@ -21,7 +21,6 @@ add_library(libserver
     src/socket/SocketTCPv4.cpp
     src/socket/SocketTCPv6.cpp
     src/server/Server.cpp
-    src/connection/Connection.cpp
     src/connection/ConnectionTCP.cpp
     src/connection/ConnectionTCPv4.cpp
     src/connection/ConnectionTCPv6.cpp

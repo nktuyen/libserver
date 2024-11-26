@@ -32,7 +32,7 @@ namespace T
 		/**
 		 * New connection callback
 		 */
-		virtual Connection *onNewConnection(Socket *pSocket) override { return new ConnectionTCPv4(this, pSocket); }
+		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket) override { return new ConnectionTCPv4(this, reinterpret_cast<SocketTCPv4 *>(pSocket)); }
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

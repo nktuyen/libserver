@@ -9,7 +9,7 @@ class MyServer;
 class MyConnection : public T::ConnectionTCPv4
 {
 public:
-    MyConnection(MyServer *pServer, T::Socket *pSocket);
+    MyConnection(MyServer *pServer, T::SocketTCPv4 *pSocket);
     virtual ~MyConnection() override {}
 
 protected:
@@ -36,10 +36,10 @@ public:
     virtual ~MyServer() override {}
 
 protected:
-    T::Connection *onNewConnection(T::Socket *pSocket) override { return new MyConnection(this, pSocket); }
+    T::ConnectionTCP *onNewConnection(T::SocketTCP *pSocket) override { return new MyConnection(this, reinterpret_cast<T::SocketTCPv4 *>(pSocket)); }
 };
 
-MyConnection::MyConnection(MyServer *pServer, T::Socket *pSocket)
+MyConnection::MyConnection(MyServer *pServer, T::SocketTCPv4 *pSocket)
     : T::ConnectionTCPv4(pServer, pSocket, true, 5)
 {
     FI();

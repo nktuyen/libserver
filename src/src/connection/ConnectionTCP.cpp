@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////
-//  ConnectionTCP.cpp
-//  Implementation of the Class ConnectionTCP
-//  Created on:      24-Nov-2024 9:32:16 PM
+//  Connection.cpp
+//  Implementation of the Class Connection
+//  Created on:      24-Nov-2024 9:11:24 PM
 //  Original author: Tuyen
 ///////////////////////////////////////////////////////////
 
@@ -9,18 +9,98 @@
 #include "ServerTCP.hpp"
 #include "SocketTCP.hpp"
 #include "Logger.hpp"
+#ifdef _WINDOWS
+#else //! _WINDOWS
+#include <unistd.h>
+#endif //_WINDOWS
 
 namespace T
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+    AliveChecker::AliveChecker(ConnectionTCP *pConn, int timeout_seconds)
+        : mConn(pConn), mTimeout(timeout_seconds), mElapsed(0)
+    {
+        FI();
+        FO();
+    }
+
+    AliveChecker::~AliveChecker()
+    {
+        FI();
+        FO();
+    }
+
+    bool AliveChecker::onInitialize()
+    {
+        FI();
+
+        if (mConn == nullptr)
+        {
+            FO();
+            return false;
+        }
+
+        mElapsed = 0;
+        FO();
+        return true;
+    }
+
+    int AliveChecker::getElapsed()
+    {
+        int res = 0;
+        std::lock_guard<std::mutex> locker(mMutex);
+        res = mElapsed;
+
+        return res;
+    }
+
+    void AliveChecker::setElapsed(int val)
+    {
+        std::lock_guard<std::mutex> locker(mMutex);
+        mElapsed = val;
+    }
+
+    void AliveChecker::Restart()
+    {
+        FI();
+        setElapsed(0);
+        FO();
+    }
+
+    int AliveChecker::onRun()
+    {
+        FI();
+        while (isRunning())
+        {
+#ifdef _WINDOWS
+            ::Sleep(1000);
+#else  //! _WINDOWS
+            ::sleep(1);
+#endif //_WINDOWS
+            setElapsed(mElapsed + 1);
+            if (getElapsed() > mTimeout)
+            {
+                mConn->setAlive(false);
+                break;
+            }
+        }
+
+        FO();
+        return 0;
+    }
 
     /**
      * Constructor
      */
-    ConnectionTCP::ConnectionTCP(ServerTCP *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
-        : Connection(pServer, pSocket, aliveChecker, aliveCheckerTimeout), mRecvBuffer(nullptr), mRecvBufSize(0)
+    ConnectionTCP::ConnectionTCP(ServerTCP *pServer, SocketTCP *pSocket, bool aliveChecker, int aliveCheckerTimeout)
+        : Thread(), mServer(pServer), mSocket(pSocket), mAlive(true), mAliveChecker(nullptr)
     {
         FI();
+
+        if (aliveChecker)
+        {
+            mAliveChecker = new AliveChecker(this, aliveCheckerTimeout);
+        }
 
         FO();
     }
@@ -30,15 +110,30 @@ namespace T
      */
     ConnectionTCP::~ConnectionTCP()
     {
-        FI();
-
-        if (mRecvBuffer != nullptr)
+        if (mAliveChecker != nullptr)
         {
-            delete[] mRecvBuffer;
-            mRecvBuffer = nullptr;
+            delete mAliveChecker;
+            mAliveChecker = nullptr;
         }
+        if (mSocket != nullptr)
+        {
+            delete mSocket;
+            mSocket = nullptr;
+        }
+    }
 
-        FO();
+    bool ConnectionTCP::isAlive()
+    {
+        bool res = false;
+        std::lock_guard<std::mutex> locker(mALiveMutex);
+        res = mAlive;
+        return res;
+    }
+
+    void ConnectionTCP::setAlive(bool bAlive)
+    {
+        std::lock_guard<std::mutex> locker(mALiveMutex);
+        mAlive = bAlive;
     }
 
     bool ConnectionTCP::onInitialize()
@@ -62,7 +157,7 @@ namespace T
     {
         FI();
 
-        SocketTCP *pSocket = reinterpret_cast<SocketTCP *>(socket());
+        SocketTCP *pSocket = socket();
         if (mAliveChecker != nullptr)
         {
             mAliveChecker->Create();
@@ -104,6 +199,59 @@ namespace T
 
         FO();
         return 0;
+    }
+
+    int ConnectionTCP::onFailure()
+    {
+        FI();
+
+        if (mAliveChecker != nullptr)
+        {
+            if (mAliveChecker->isRunning())
+                mAliveChecker->Stop();
+        }
+
+        if (mSocket != nullptr)
+        {
+            if (mSocket->handle() != InvalidHandle)
+            {
+                mSocket->Close();
+            }
+        }
+
+        if (mServer != nullptr)
+        {
+            mServer->onConnectionClose(this);
+        }
+
+        FO();
+        return 1;
+    }
+
+    void ConnectionTCP::onSuccess()
+    {
+        FI();
+
+        if (mAliveChecker != nullptr)
+        {
+            if (mAliveChecker->isRunning())
+                mAliveChecker->Stop();
+        }
+
+        if (mSocket != nullptr)
+        {
+            if (mSocket->handle() != InvalidHandle)
+            {
+                mSocket->Close();
+            }
+        }
+
+        if (mServer != nullptr)
+        {
+            mServer->onConnectionClose(this);
+        }
+
+        FO();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

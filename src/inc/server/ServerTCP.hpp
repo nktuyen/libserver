@@ -10,6 +10,7 @@
 
 #include "Server.hpp"
 #include "ConnectionTCP.hpp"
+#include <map>
 
 namespace T
 {
@@ -38,9 +39,16 @@ namespace T
 		 */
 		virtual int onRun() override;
 		/**
+		 * The callback method that will be called when a connection is closed
+		 */
+		virtual void onConnectionClose(ConnectionTCP *conn);
+		/**
 		 * Override onNewConnection callback method
 		 */
-		Connection *onNewConnection(Socket *pSocket) override { return new ConnectionTCP(this, pSocket); }
+		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket) { return new ConnectionTCP(this, pSocket); }
+
+	private:
+		std::map<ConnectionHandle, ConnectionTCP *> mConnMap;
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

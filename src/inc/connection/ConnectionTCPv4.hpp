@@ -14,6 +14,8 @@ namespace T
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	class ServerTCPv4;
+	class SocketTCPv4;
+
 	class ConnectionTCPv4 : public ConnectionTCP
 	{
 		friend class ServerTCPv4;
@@ -28,7 +30,7 @@ namespace T
 		/**
 		 * Constructor
 		 */
-		explicit ConnectionTCPv4(ServerTCPv4 *pServer = nullptr, Socket *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
+		explicit ConnectionTCPv4(ServerTCPv4 *pServer = nullptr, SocketTCPv4 *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

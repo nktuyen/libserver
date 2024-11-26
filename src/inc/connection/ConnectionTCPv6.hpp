@@ -14,6 +14,7 @@ namespace T
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	class ServerTCPv6;
+	class SocketTCPv6;
 	class ConnectionTCPv6 : public ConnectionTCP
 	{
 		friend class ServerTCPv6;
@@ -28,7 +29,7 @@ namespace T
 		/**
 		 * Constructor
 		 */
-		explicit ConnectionTCPv6(ServerTCPv6 *pServer = nullptr, Socket *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
+		explicit ConnectionTCPv6(ServerTCPv6 *pServer = nullptr, SocketTCPv6 *pSocket = nullptr, bool aliveChecker = false, int aliveCheckerTimeout = 60);
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

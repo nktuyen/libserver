@@ -7,6 +7,7 @@
 
 #include "ConnectionTCPv6.hpp"
 #include "ServerTCPv6.hpp"
+#include "SocketTCPv6.hpp"
 #include "Logger.hpp"
 
 namespace T
@@ -16,7 +17,7 @@ namespace T
     /**
      * Constructor
      */
-    ConnectionTCPv6::ConnectionTCPv6(ServerTCPv6 *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
+    ConnectionTCPv6::ConnectionTCPv6(ServerTCPv6 *pServer, SocketTCPv6 *pSocket, bool aliveChecker, int aliveCheckerTimeout)
         : ConnectionTCP(pServer, pSocket, aliveChecker, aliveCheckerTimeout)
     {
         FI();

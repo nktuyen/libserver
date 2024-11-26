@@ -7,6 +7,7 @@
 
 #include "ConnectionTCPv4.hpp"
 #include "ServerTCPv4.hpp"
+#include "SocketTCPv4.hpp"
 #include "Logger.hpp"
 
 namespace T
@@ -16,7 +17,7 @@ namespace T
     /**
      * Constructor
      */
-    ConnectionTCPv4::ConnectionTCPv4(ServerTCPv4 *pServer, Socket *pSocket, bool aliveChecker, int aliveCheckerTimeout)
+    ConnectionTCPv4::ConnectionTCPv4(ServerTCPv4 *pServer, SocketTCPv4 *pSocket, bool aliveChecker, int aliveCheckerTimeout)
         : ConnectionTCP(pServer, pSocket, aliveChecker, aliveCheckerTimeout)
     {
     }

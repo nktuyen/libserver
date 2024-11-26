@@ -38,42 +38,8 @@ namespace T
     {
         FI();
 
-        auto ite = mConnMap.begin();
-        for (; ite != mConnMap.end(); ++ite)
-        {
-            Connection *pConn = ite->second;
-            if (pConn != nullptr)
-                delete pConn;
-        }
-        mConnMap.clear();
-
         FO();
     }
 
-    void Server ::onConnectionClose(Connection *conn)
-    {
-        FI();
-        if (conn == nullptr)
-        {
-            FO();
-            return;
-        }
-
-        if (conn->handle() == InvalidConnection)
-        {
-            FO();
-            return;
-        }
-
-        auto ite = mConnMap.find(conn->handle());
-        if (ite != mConnMap.end())
-        {
-            Connection *pConn = ite->second;
-            delete pConn;
-            mConnMap.erase(ite);
-        }
-
-        FO();
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 }

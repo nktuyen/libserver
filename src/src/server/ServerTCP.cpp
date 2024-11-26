@@ -31,6 +31,15 @@ namespace T
     {
         FI();
 
+        auto ite = mConnMap.begin();
+        for (; ite != mConnMap.end(); ++ite)
+        {
+            ConnectionTCP *pConn = ite->second;
+            if (pConn != nullptr)
+                delete pConn;
+        }
+        mConnMap.clear();
+
         FO();
     }
 
@@ -97,15 +106,20 @@ namespace T
         {
             if (pSocket->isReadWritable())
             {
-                FS("isReadWritable");
                 Socket *incommingSocket = pSocket->Accept();
                 if (incommingSocket != nullptr)
                 {
-                    Connection *newConnection = this->onNewConnection(incommingSocket);
+                    ConnectionTCP *newConnection = this->onNewConnection(reinterpret_cast<SocketTCP *>(incommingSocket));
                     if (newConnection != nullptr)
                     {
-                        mConnMap.insert(std::make_pair(newConnection->handle(), newConnection));
-                        newConnection->Establish();
+                        if (newConnection->Establish())
+                        {
+                            mConnMap.insert(std::make_pair(newConnection->handle(), newConnection));
+                        }
+                        else
+                        {
+                            delete newConnection;
+                        }
                     }
                 }
             }
@@ -113,6 +127,32 @@ namespace T
 
         FO();
         return 0;
+    }
+
+    void ServerTCP::onConnectionClose(ConnectionTCP *conn)
+    {
+        FI();
+        if (conn == nullptr)
+        {
+            FO();
+            return;
+        }
+
+        if (conn->handle() == InvalidConnection)
+        {
+            FO();
+            return;
+        }
+
+        auto ite = mConnMap.find(conn->handle());
+        if (ite != mConnMap.end())
+        {
+            ConnectionTCP *pConn = ite->second;
+            delete pConn;
+            mConnMap.erase(ite);
+        }
+
+        FO();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

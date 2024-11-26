@@ -26,7 +26,7 @@ namespace T
 		/**
 		 * New connection callback
 		 */
-		virtual Connection *onNewConnection(Socket *pSocket) override { return new ConnectionTCPv6(this, pSocket); }
+		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket) override { return new ConnectionTCPv6(this, reinterpret_cast<SocketTCPv6 *>(pSocket)); }
 	};
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 }

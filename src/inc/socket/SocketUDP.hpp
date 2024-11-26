@@ -27,6 +27,10 @@ namespace T
 		 */
 		virtual ~SocketUDP() override;
 		/**
+		 * Associates a local address with a socket
+		 */
+		virtual bool Bind(const char *ip, unsigned short port) override;
+		/**
 		 * Receives a datagram and stores the source address
 		 */
 		virtual int ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags = 0) override;

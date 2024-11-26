@@ -17,6 +17,10 @@ namespace T
 	SocketUDP::SocketUDP(int nFamily)
 		: Socket(nFamily, SOCK_DGRAM, IPPROTO_UDP)
 	{
+
+		FI();
+
+		FO();
 	}
 
 	/**
@@ -24,6 +28,19 @@ namespace T
 	 */
 	SocketUDP::~SocketUDP()
 	{
+		FI();
+
+		FO();
+	}
+
+	/**
+	 * Associates a local address with a socket
+	 */
+	bool SocketUDP::Bind(const char *ip, unsigned short port)
+	{
+		FI();
+		FO();
+		return Socket::Bind(ip, port);
 	}
 
 	/**

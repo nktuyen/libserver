@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cstdio>
-#define _DEBUG
 #include "ConnectionTCPv4.hpp"
 #include "ServerTCPv4.hpp"
 #include "SocketTCPv4.hpp"
+#define _DEBUG
 #include "Logger.hpp"
 
 class MyServer;
@@ -50,7 +50,7 @@ MyConnection::MyConnection(MyServer *pServer, T::SocketTCPv4 *pSocket)
 
 int main(int argc, char *argv[])
 {
-    T::Logger::Init("libserver");
+    T::Logger::Init("TestServerTCPv4");
 #ifdef _WINDOWS
 #pragma comment(lib, "Ws2_32.lib")
     WSADATA wsd = {0};

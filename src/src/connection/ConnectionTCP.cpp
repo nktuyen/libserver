@@ -180,16 +180,36 @@ namespace T
                 int n = pSocket->Receive(mRecvBuffer, mRecvBufSize);
                 if (n > 0)
                 {
+                    if (mAliveChecker != nullptr)
+                    {
+                        mAliveChecker->Restart();
+                    }
+                    this->setAlive(true);
                     this->onDataReceived(mRecvBuffer, n);
+                    if (mServer != nullptr)
+                    {
+                        mServer->onDataReceived(mRecvBuffer, n);
+                    }
                 }
                 else if (n == 0)
                 {
+                    setAlive(false);
                     break;
                 }
                 else if (n == SocketError)
                 {
+                    setAlive(false);
                     break;
                 }
+            }
+        }
+
+        if (mAliveChecker != nullptr)
+        {
+            if (mAliveChecker->isRunning())
+            {
+                mAliveChecker->Stop();
+                mAliveChecker->Wait();
             }
         }
 

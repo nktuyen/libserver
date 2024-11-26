@@ -7,6 +7,7 @@
 
 #include "ServerUDPv4.hpp"
 #include "SocketUDPv4.hpp"
+#include "Logger.hpp"
 
 namespace T
 {
@@ -18,7 +19,11 @@ namespace T
     ServerUDPv4::ServerUDPv4(const char *ip, unsigned short port)
         : ServerUDP(ip, port)
     {
+        FI();
+
         mSocket = new SocketUDPv4();
+
+        FO();
     }
 
     /**
@@ -26,6 +31,9 @@ namespace T
      */
     ServerUDPv4::~ServerUDPv4()
     {
+        FI();
+
+        FO();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

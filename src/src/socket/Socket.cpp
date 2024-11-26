@@ -423,7 +423,6 @@ namespace T
 	int Socket::ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
 		FI();
-
 		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
@@ -434,10 +433,11 @@ namespace T
 		SocketSize_t outlen = 0;
 		addrinfo.sin_family = mFamily;
 		addrinfo.sin_port = htons(port);
-		addrinfo.sin_addr.s_addr = inet_addr(ip);
+		addrinfo.sin_addr.s_addr = INADDR_ANY;
 
 		int res = ::recvfrom(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), &outlen);
-		FM(":res=%d", res);
+		FM("res = %d", res);
+
 		FO();
 		return res;
 	}

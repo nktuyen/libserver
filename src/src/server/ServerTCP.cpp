@@ -62,12 +62,6 @@ namespace T
         }
 
         SocketTCP *pSocket = reinterpret_cast<SocketTCP *>(socket());
-        if (!pSocket->Bind(ip(), port()))
-        {
-            FO();
-            return false;
-        }
-
         if (!pSocket->Listen())
         {
             FO();

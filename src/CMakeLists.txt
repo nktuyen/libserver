@@ -42,9 +42,17 @@ add_library(libserver
     src/server/ServerUDPv4.cpp
 )
 
-add_executable(test
-    main.cpp
+add_executable(TestServerTCPv4
+    TestServerTCPv4.cpp
 )
 
-target_link_libraries(test libserver pthread)
-target_compile_definitions(test PUBLIC __DEBUG__=1)
+target_link_libraries(TestServerTCPv4 libserver pthread)
+target_compile_definitions(TestServerTCPv4 PUBLIC _DEBUG=1)
+
+
+add_executable(TestServerUDPv4
+    TestServerUDPv4.cpp
+)
+
+target_link_libraries(TestServerUDPv4 libserver pthread)
+target_compile_definitions(TestServerUDPv4 PUBLIC _DEBUG=1)

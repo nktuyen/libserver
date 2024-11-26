@@ -62,8 +62,13 @@ namespace T
             return false;
         }
 
-
         if (!mSocket->Create())
+        {
+            FO();
+            return false;
+        }
+
+        if (!mSocket->Bind(mIPAddr, mPort))
         {
             FO();
             return false;

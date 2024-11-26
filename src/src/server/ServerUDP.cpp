@@ -7,6 +7,7 @@
 
 #include "ServerUDP.hpp"
 #include "SocketUDP.hpp"
+#include "Logger.hpp"
 
 namespace T
 {
@@ -18,6 +19,9 @@ namespace T
     ServerUDP::ServerUDP(const char *ip, unsigned short port)
         : Server(ip, port), mRecvBuffer(nullptr), mRecvBufSize(0)
     {
+        FI();
+
+        FO();
     }
 
     /**
@@ -25,11 +29,15 @@ namespace T
      */
     ServerUDP::~ServerUDP()
     {
+        FI();
+
         if (mRecvBuffer != nullptr)
         {
             delete[] mRecvBuffer;
             mRecvBuffer = nullptr;
         }
+
+        FO();
     }
 
     bool ServerUDP::onInitialize()
@@ -62,26 +70,21 @@ namespace T
 
         while (isRunning())
         {
-            if (pSocket->isReadable())
+            if (pSocket->isReadWritable())
             {
                 memset(mRecvBuffer, 0, mRecvBufSize);
-                int n = pSocket->Receive(mRecvBuffer, mRecvBufSize);
+                int n = pSocket->ReceiveFrom(mRecvBuffer, mRecvBufSize, mIPAddr, mPort);
                 if (n > 0)
                 {
-                    if (mAliveChecker != nullptr)
-                    {
-                        mAliveChecker->Restart();
-                    }
-                    this->setAlive(true);
                     this->onDataReceived(mRecvBuffer, n);
-                    if (mServer != nullptr)
-                    {
-                        mServer->onDataReceived(mRecvBuffer, n);
-                    }
                 }
                 else if (n == 0)
                 {
-                    break;
+                    //break;
+                }
+                else if (n == SocketError)
+                {
+                    //break;
                 }
             }
         }

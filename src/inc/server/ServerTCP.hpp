@@ -15,6 +15,7 @@
 namespace T
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	class ConnectionTCP;
 	class ServerTCP : public Server
 	{
 		friend class ConnectionTCP;
@@ -46,7 +47,10 @@ namespace T
 		 * Override onNewConnection callback method
 		 */
 		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket);
-
+		/**
+		 * Callback method that will be called when data is received
+		 */
+		virtual void onDataReceived(ConnectionTCP* pConn, const char *data, int len);
 	private:
 		std::map<ConnectionHandle, ConnectionTCP *> mConnMap;
 	};

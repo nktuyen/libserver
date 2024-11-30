@@ -110,6 +110,15 @@ namespace T
         return 0;
     }
 
+    void ServerTCP::onDataReceived(ConnectionTCP *pConn, const char *data, int len)
+    {
+        FI();
+
+        Server::onDataReceived(data, len);
+
+        FO();
+    }
+
     void ServerTCP::onConnectionClose(ConnectionTCP *conn)
     {
         FI();

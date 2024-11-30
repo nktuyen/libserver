@@ -192,7 +192,7 @@ namespace T
                     this->onDataReceived(mRecvBuffer, n);
                     if (mServer != nullptr)
                     {
-                        mServer->onDataReceived(mRecvBuffer, n);
+                        mServer->onDataReceived(this, mRecvBuffer, n);
                     }
                 }
                 else if (n == 0)

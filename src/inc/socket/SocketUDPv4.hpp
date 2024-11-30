@@ -15,15 +15,11 @@ namespace T
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	class SocketUDPv4 : public SocketUDP
 	{
-		friend class ServerUDPv4;
-
-	protected:
+	public:
 		/**
 		 * Constructor
 		 */
 		explicit SocketUDPv4();
-
-	public:
 		/**
 		 * Destructor
 		 */

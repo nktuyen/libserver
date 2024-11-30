@@ -14,16 +14,11 @@ namespace T
 {
 	class SocketTCPv4 : public SocketTCP
 	{
-		friend class ServerTCPv4;
-		friend class ConnectionTCPv4;
-
-	protected:
+	public:
 		/**
 		 * Constructor
 		 */
 		explicit SocketTCPv4();
-
-	public:
 		/**
 		 * Destructor
 		 */

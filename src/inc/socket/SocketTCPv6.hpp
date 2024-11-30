@@ -14,16 +14,12 @@ namespace T
 {
 	class SocketTCPv6 : public SocketTCP
 	{
-		friend class ServerTCPv6;
-		friend class ConnectionTCPv6;
-
-	protected:
+	public:
 		/**
 		 * Constructor
 		 */
 		explicit SocketTCPv6();
 
-	public:
 		/**
 		 * Destructor
 		 */

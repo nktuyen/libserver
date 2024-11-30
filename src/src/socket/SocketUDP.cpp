@@ -15,7 +15,7 @@ namespace T
 	 * Constructor
 	 */
 	SocketUDP::SocketUDP(int nFamily)
-		: Socket(nFamily, SOCK_DGRAM, IPPROTO_UDP)
+		: Socket(nFamily, SOCK_DGRAM, IPPROTO_IP)
 	{
 
 		FI();
@@ -48,8 +48,8 @@ namespace T
 	 */
 	int SocketUDP::ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-		FI();
-		FO();
+		//FI();
+		//FO();
 		return Socket::ReceiveFrom(buffer, len, ip, port, flags);
 	}
 
@@ -58,8 +58,8 @@ namespace T
 	 */
 	int SocketUDP::SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-		FI();
-		FO();
+		//FI();
+		//FO();
 		return Socket::SendTo(buffer, len, ip, port, flags);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////

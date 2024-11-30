@@ -70,21 +70,23 @@ namespace T
 
         while (isRunning())
         {
-            if (pSocket->isReadWritable())
+            if (pSocket->isReadable())
             {
                 memset(mRecvBuffer, 0, mRecvBufSize);
                 int n = pSocket->ReceiveFrom(mRecvBuffer, mRecvBufSize, mIPAddr, mPort);
                 if (n > 0)
                 {
+                    FS("Recived data:");
                     this->onDataReceived(mRecvBuffer, n);
                 }
                 else if (n == 0)
                 {
-                    //break;
+                    // break;
                 }
                 else if (n == SocketError)
                 {
-                    //break;
+                    printf("Error:%d",errno);
+                    // break;
                 }
             }
         }

@@ -213,6 +213,8 @@ namespace T
 	{
 		FI();
 
+		FM("ip=%s, port=%d", ip, port);
+
 		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
@@ -422,7 +424,7 @@ namespace T
 	 */
 	int Socket::ReceiveFrom(char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-		FI();
+		// FI();
 		if (mHandle == InvalidSocketHandle)
 		{
 			FO();
@@ -436,9 +438,9 @@ namespace T
 		addrinfo.sin_addr.s_addr = INADDR_ANY;
 
 		int res = ::recvfrom(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), &outlen);
-		FM("res = %d", res);
+		// FM("res = %d", res);
 
-		FO();
+		// FO();
 		return res;
 	}
 
@@ -466,7 +468,7 @@ namespace T
 	 */
 	int Socket::SendTo(const char *buffer, int len, const char *ip, unsigned short port, int flags)
 	{
-		FI();
+		//FI();
 
 		if (mHandle == InvalidSocketHandle)
 		{
@@ -481,8 +483,8 @@ namespace T
 		addrinfo.sin_addr.s_addr = inet_addr(ip);
 
 		int res = ::sendto(mHandle, buffer, len, flags, reinterpret_cast<sockaddr *>(&addrinfo), outlen);
-		FM(":res=%d", res);
-		FO();
+		//FM(":res=%d", res);
+		//FO();
 		return res;
 	}
 

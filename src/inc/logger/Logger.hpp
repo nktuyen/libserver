@@ -88,7 +88,8 @@ namespace T
 		static std::string sAppName;
 	};
 
-#if defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG)
+#define TDEBUG
+#if defined(__DEBUG__) || defined(DEBUG) || defined(_DEBUG) || defined(TDEBUG)
 #define LOGD(fmt, ...) T::Logger::Log(T::Logger::shorten(__FILE__).c_str(), __LINE__, __FUNCTION__, T::LogLevel::DEBUG, fmt, ##__VA_ARGS__)
 #else
 #define LOGD(fmt, ...)

@@ -14,7 +14,7 @@ public:
     virtual ~MyConnection() override {}
 
 protected:
-    void onData(const char *data, int len)
+    void onDataReceived(const char *data, int len) override
     {
         if (data != nullptr)
         {

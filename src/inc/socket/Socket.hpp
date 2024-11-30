@@ -37,7 +37,6 @@ namespace T
 {
 	class Socket
 	{
-		friend class Connection;
 		friend class Server;
 
 	protected:

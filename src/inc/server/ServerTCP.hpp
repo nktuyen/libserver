@@ -46,10 +46,6 @@ namespace T
 		 * Override onNewConnection callback method
 		 */
 		virtual ConnectionTCP *onNewConnection(SocketTCP *pSocket);
-		/**
-		 * Callback method that will be called when data is received
-		 */
-		virtual void onDataReceived(const char *data, int len) override { ; }
 
 	private:
 		std::map<ConnectionHandle, ConnectionTCP *> mConnMap;

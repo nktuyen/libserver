@@ -6,13 +6,19 @@
 class MyServer : public T::ServerUDPv4
 {
 public:
-    MyServer(const char *ip, unsigned short port) : T::ServerUDPv4(ip, port) {}
+    MyServer(const char *ip, unsigned short port) : T::ServerUDPv4(ip, port)
+    {
+        FO();
+        FO();
+    }
     virtual ~MyServer() override {}
 
 protected:
     void onDataReceived(const char *data, int len)
     {
-        printf("%s\n",data);
+        FI();
+        printf("%s\n", data);
+        FO();
     }
 };
 

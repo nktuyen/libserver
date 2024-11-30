@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////
-//  Connection.hpp
-//  Implementation of the Class Connection
+//  ConnectionTCP.hpp
+//  Implementation of the Class ConnectionTCP
 //  Created on:      24-Nov-2024 9:11:24 PM
 //  Original author: Tuyen
 ///////////////////////////////////////////////////////////

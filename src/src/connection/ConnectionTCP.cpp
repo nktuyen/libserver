@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////
-//  Connection.cpp
-//  Implementation of the Class Connection
+//  ConnectionTCP.cpp
+//  Implementation of the Class ConnectionTCP
 //  Created on:      24-Nov-2024 9:11:24 PM
 //  Original author: Tuyen
 ///////////////////////////////////////////////////////////
@@ -110,6 +110,8 @@ namespace T
      */
     ConnectionTCP::~ConnectionTCP()
     {
+        FI();
+
         if (mAliveChecker != nullptr)
         {
             delete mAliveChecker;
@@ -126,6 +128,8 @@ namespace T
             delete[] mRecvBuffer;
             mRecvBuffer = nullptr;
         }
+
+        FO();
     }
 
     bool ConnectionTCP::isAlive()

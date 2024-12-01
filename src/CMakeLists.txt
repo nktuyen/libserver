@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
-project(libserver VERSION 0.0.1 LANGUAGES CXX DESCRIPTION "C++ TCP/IP server libary")
+project(server VERSION 0.0.1 LANGUAGES CXX DESCRIPTION "C++ TCP/IP server libary")
 
-include_directories(libserver PUBLIC
+include_directories(server PUBLIC
     inc
     inc/socket
     inc/logger
@@ -10,7 +10,7 @@ include_directories(libserver PUBLIC
     inc/connection
 )
 
-add_library(libserver
+add_library(server
     inc/logger/Logger.hpp
     inc/thread/Thread.hpp
     inc/socket/Socket.hpp
@@ -46,7 +46,7 @@ add_executable(TestServerTCPv4
     src/TestServerTCPv4.cpp
 )
 
-target_link_libraries(TestServerTCPv4 libserver pthread)
+target_link_libraries(TestServerTCPv4 server pthread)
 target_compile_definitions(TestServerTCPv4 PUBLIC _DEBUG=1)
 
 
@@ -54,5 +54,5 @@ add_executable(TestServerUDPv4
     src/TestServerUDPv4.cpp
 )
 
-target_link_libraries(TestServerUDPv4 libserver pthread)
+target_link_libraries(TestServerUDPv4 server pthread)
 target_compile_definitions(TestServerUDPv4 PUBLIC _DEBUG=1)
